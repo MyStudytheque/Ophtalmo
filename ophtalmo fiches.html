@@ -1,0 +1,2753 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ophtalmologie DFASM1 — Fiches de Révision</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3350;
+    --accent: #4f8ef7;
+    --accent2: #7c5cbf;
+    --green: #3ecf8e;
+    --orange: #f5a623;
+    --red: #e85d5d;
+    --yellow: #f7d154;
+    --text: #e8eaf0;
+    --text-muted: #8b90a8;
+    --text-dim: #5a5f7a;
+    --font-display: 'Georgia', serif;
+    --font-body: system-ui, -apple-system, sans-serif;
+    --font-mono: 'Courier New', monospace;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #0d1430 0%, #1a1040 50%, #0d1430 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  header h1 {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: normal;
+    color: var(--text);
+    letter-spacing: 0.03em;
+  }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--text-muted); font-size: 0.82rem; margin-top: 2px; }
+
+  .header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  #search {
+    flex: 1;
+    min-width: 180px;
+    max-width: 340px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: var(--text);
+    font-size: 0.88rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #search:focus { border-color: var(--accent); }
+  #search::placeholder { color: var(--text-dim); }
+
+  .progress-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .progress-bar {
+    width: 120px;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 99px;
+    transition: width 0.4s;
+  }
+
+  /* ── LAYOUT ── */
+  .app { display: flex; flex: 1; min-height: 0; }
+
+  /* ── SIDEBAR ── */
+  nav {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 10px 0 20px;
+  }
+
+  .nav-section {
+    padding: 6px 14px 2px;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+
+  nav button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 14px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    text-align: left;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+    line-height: 1.3;
+  }
+  nav button:hover { background: var(--surface2); color: var(--text); }
+  nav button.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: rgba(79,142,247,0.08);
+  }
+  nav button.done .nav-dot { background: var(--green); }
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--text-dim);
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  nav button.active .nav-dot { background: var(--accent); border-color: var(--accent); }
+
+  /* ── CONTENT ── */
+  main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    max-width: 900px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .card-header h2 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: normal;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .card-header .subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 18px; }
+  .section-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── PILLS / TAGS ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .tag {
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 0.76rem;
+    font-weight: 500;
+  }
+  .tag-red { background: rgba(232,93,93,0.15); color: #e85d5d; border: 1px solid rgba(232,93,93,0.3); }
+  .tag-orange { background: rgba(245,166,35,0.15); color: #f5a623; border: 1px solid rgba(245,166,35,0.3); }
+  .tag-blue { background: rgba(79,142,247,0.15); color: #4f8ef7; border: 1px solid rgba(79,142,247,0.3); }
+  .tag-green { background: rgba(62,207,142,0.15); color: #3ecf8e; border: 1px solid rgba(62,207,142,0.3); }
+  .tag-purple { background: rgba(124,92,191,0.15); color: #a47fe0; border: 1px solid rgba(124,92,191,0.3); }
+  .tag-yellow { background: rgba(247,209,84,0.15); color: #f7d154; border: 1px solid rgba(247,209,84,0.3); }
+
+  /* ── ALERT BOX ── */
+  .alert {
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .alert-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .alert-red { background: rgba(232,93,93,0.1); border: 1px solid rgba(232,93,93,0.25); }
+  .alert-orange { background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.25); }
+  .alert-blue { background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.25); }
+  .alert-green { background: rgba(62,207,142,0.1); border: 1px solid rgba(62,207,142,0.25); }
+  .alert-yellow { background: rgba(247,209,84,0.1); border: 1px solid rgba(247,209,84,0.3); }
+
+  /* ── GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 650px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  .mini-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+  }
+  .mini-card h4 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .mini-card p, .mini-card li {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .mini-card ul { padding-left: 14px; }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th {
+    background: var(--surface2);
+    color: var(--text-muted);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  td strong { color: var(--text); }
+
+  /* ── SCHEMA / DIAGRAM ── */
+  .schema {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* ── SVG DIAGRAMS ── */
+  .svg-wrap {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .svg-wrap svg { max-width: 100%; height: auto; }
+  .svg-caption {
+    font-size: 0.74rem;
+    color: var(--text-dim);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* ── QCM PIÈGE ── */
+  .qcm-box {
+    background: rgba(124,92,191,0.08);
+    border: 1px solid rgba(124,92,191,0.3);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+  }
+  .qcm-box .qcm-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #a47fe0;
+    margin-bottom: 6px;
+  }
+  .qcm-box p { font-size: 0.83rem; color: var(--text); line-height: 1.5; }
+
+  /* ── KEY FACT ── */
+  .key-fact {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 14px;
+    background: rgba(247,209,84,0.06);
+    border-left: 3px solid var(--yellow);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-bottom: 8px;
+    font-size: 0.84rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* ── URGENCE ── */
+  .urgence {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(232,93,93,0.15);
+    border: 1px solid rgba(232,93,93,0.4);
+    color: #e85d5d;
+    border-radius: 99px;
+    padding: 3px 12px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  /* ── DONE BUTTON ── */
+  .done-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 20px;
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.2s;
+  }
+  .done-btn:hover { border-color: var(--green); color: var(--green); }
+  .done-btn.done-active { background: rgba(62,207,142,0.1); border-color: var(--green); color: var(--green); }
+
+  /* ── HIDDEN ── */
+  .hidden { display: none !important; }
+
+  /* ── WELCOME ── */
+  #welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    text-align: center;
+    padding: 40px;
+  }
+  #welcome .eye-logo {
+    width: 90px; height: 90px;
+    margin-bottom: 24px;
+  }
+  #welcome h2 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: normal;
+    margin-bottom: 10px;
+  }
+  #welcome p { color: var(--text-muted); font-size: 0.9rem; max-width: 500px; line-height: 1.7; }
+  .chapters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin-top: 28px;
+    width: 100%;
+    max-width: 700px;
+  }
+  .chapter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 12px;
+    cursor: pointer;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .chapter-btn:hover { border-color: var(--accent); color: var(--text); transform: translateY(-2px); }
+  .chapter-btn .ch-icon { font-size: 1.5rem; }
+  .chapter-btn .ch-num { font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div>
+      <h1>👁 <span>Ophtalmologie</span> — Fiches DFASM1</h1>
+      <p>21 chapitres · Collège d'Ophtalmologie · EDN/QCM</p>
+    </div>
+  </div>
+  <div class="header-bar">
+    <input type="text" id="search" placeholder="Rechercher un mot-clé..." oninput="handleSearch(this.value)">
+    <div class="progress-bar-wrap">
+      <span id="progress-text">0 / 21 chapitres</span>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+</header>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="nav-section">Bases</div>
+  <button onclick="showChapter('semiologie')" id="nav-semiologie"><span class="nav-dot"></span>1. Sémiologie oculaire</button>
+  <button onclick="showChapter('refraction')" id="nav-refraction"><span class="nav-dot"></span>2. Troubles de la réfraction</button>
+
+  <div class="nav-section">Pédiatrie</div>
+  <button onclick="showChapter('nourrisson')" id="nav-nourrisson"><span class="nav-dot"></span>3. Suivi nourrisson</button>
+  <button onclick="showChapter('strabisme')" id="nav-strabisme"><span class="nav-dot"></span>4. Strabisme & Amblyopie</button>
+
+  <div class="nav-section">Motricité</div>
+  <button onclick="showChapter('diplopie')" id="nav-diplopie"><span class="nav-dot"></span>5. Diplopie</button>
+
+  <div class="nav-section">Inflammations</div>
+  <button onclick="showChapter('infections')" id="nav-infections"><span class="nav-dot"></span>6. Infections & Inflammations</button>
+
+  <div class="nav-section">Troubles visuels</div>
+  <button onclick="showChapter('chronique')" id="nav-chronique"><span class="nav-dot"></span>7. Altération chronique</button>
+  <button onclick="showChapter('aigue')" id="nav-aigue"><span class="nav-dot"></span>8. Altération aiguë</button>
+
+  <div class="nav-section">Cornée</div>
+  <button onclick="showChapter('prelevement')" id="nav-prelevement"><span class="nav-dot"></span>9. Prélèvements cornée</button>
+  <button onclick="showChapter('greffe')" id="nav-greffe"><span class="nav-dot"></span>10. Greffe de cornée</button>
+
+  <div class="nav-section">Traumatologie</div>
+  <button onclick="showChapter('traumatismes')" id="nav-traumatismes"><span class="nav-dot"></span>11. Traumatismes oculaires</button>
+  <button onclick="showChapter('brulures')" id="nav-brulures"><span class="nav-dot"></span>12. Brûlures oculaires</button>
+
+  <div class="nav-section">Pathologies</div>
+  <button onclick="showChapter('cataracte')" id="nav-cataracte"><span class="nav-dot"></span>13. Cataracte</button>
+  <button onclick="showChapter('glaucome')" id="nav-glaucome"><span class="nav-dot"></span>14. Glaucomes</button>
+  <button onclick="showChapter('dmla')" id="nav-dmla"><span class="nav-dot"></span>15. DMLA</button>
+  <button onclick="showChapter('occlusion-arterielle')" id="nav-occlusion-arterielle"><span class="nav-dot"></span>16. Occlusions artérielles & NOIA</button>
+  <button onclick="showChapter('occlusion-veineuse')" id="nav-occlusion-veineuse"><span class="nav-dot"></span>17. Occlusions veineuses</button>
+
+  <div class="nav-section">Annexes & Systémique</div>
+  <button onclick="showChapter('paupieres')" id="nav-paupieres"><span class="nav-dot"></span>18. Paupières & Voies lacrymales</button>
+  <button onclick="showChapter('sep')" id="nav-sep"><span class="nav-dot"></span>19. Œil & SEP</button>
+  <button onclick="showChapter('retinopathie')" id="nav-retinopathie"><span class="nav-dot"></span>20. Rétinopathie diabétique</button>
+  <button onclick="showChapter('dysthyroide')" id="nav-dysthyroide"><span class="nav-dot"></span>21. Orbitopathie dysthyroïdienne</button>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+
+<!-- WELCOME -->
+<div id="welcome">
+  <svg class="eye-logo" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="45" cy="45" r="44" stroke="#2e3350" stroke-width="2"/>
+    <path d="M10 45 C20 25, 70 25, 80 45 C70 65, 20 65, 10 45Z" fill="none" stroke="#4f8ef7" stroke-width="2.5"/>
+    <circle cx="45" cy="45" r="14" fill="none" stroke="#7c5cbf" stroke-width="2.5"/>
+    <circle cx="45" cy="45" r="6" fill="#4f8ef7" opacity="0.8"/>
+    <circle cx="48" cy="42" r="2" fill="white" opacity="0.6"/>
+  </svg>
+  <h2>Fiches Ophtalmologie</h2>
+  <p>21 chapitres structurés pour les QCMs de DFASM1 et les EDN. Chaque fiche contient les points clés, les pièges classiques et des schémas mnémotechniques.</p>
+  <div class="chapters-grid">
+    <div class="chapter-btn" onclick="showChapter('semiologie')"><span class="ch-icon">🔍</span><span>Sémiologie</span><span class="ch-num">Ch. 1</span></div>
+    <div class="chapter-btn" onclick="showChapter('refraction')"><span class="ch-icon">👓</span><span>Réfraction</span><span class="ch-num">Ch. 2</span></div>
+    <div class="chapter-btn" onclick="showChapter('nourrisson')"><span class="ch-icon">👶</span><span>Nourrisson</span><span class="ch-num">Ch. 3</span></div>
+    <div class="chapter-btn" onclick="showChapter('strabisme')"><span class="ch-icon">👀</span><span>Strabisme</span><span class="ch-num">Ch. 4</span></div>
+    <div class="chapter-btn" onclick="showChapter('diplopie')"><span class="ch-icon">👁️</span><span>Diplopie</span><span class="ch-num">Ch. 5</span></div>
+    <div class="chapter-btn" onclick="showChapter('infections')"><span class="ch-icon">🦠</span><span>Infections</span><span class="ch-num">Ch. 6</span></div>
+    <div class="chapter-btn" onclick="showChapter('aigue')"><span class="ch-icon">⚡</span><span>Altération aiguë</span><span class="ch-num">Ch. 8</span></div>
+    <div class="chapter-btn" onclick="showChapter('glaucome')"><span class="ch-icon">📊</span><span>Glaucomes</span><span class="ch-num">Ch. 14</span></div>
+    <div class="chapter-btn" onclick="showChapter('dmla')"><span class="ch-icon">🟡</span><span>DMLA</span><span class="ch-num">Ch. 15</span></div>
+    <div class="chapter-btn" onclick="showChapter('retinopathie')"><span class="ch-icon">🩺</span><span>Rétinopathie diabétique</span><span class="ch-num">Ch. 20</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CH1 — SÉMIOLOGIE
+═══════════════════════════════════════════════════════════ -->
+<div id="ch-semiologie" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(79,142,247,0.15)">🔍</div>
+    <div>
+      <h2>Sémiologie oculaire</h2>
+      <div class="subtitle">Bases anatomiques · Examen ophtalmologique · Acuité visuelle</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Anatomie fonctionnelle — rappels clés</div>
+    <div class="svg-wrap">
+      <svg viewBox="0 0 480 260" xmlns="http://www.w3.org/2000/svg" style="max-height:220px">
+        <!-- Coupe sagittale de l'œil -->
+        <!-- Sclère -->
+        <ellipse cx="240" cy="130" rx="110" ry="100" fill="none" stroke="#4f8ef7" stroke-width="2.5"/>
+        <!-- Cornée -->
+        <path d="M155 105 Q130 130 155 155" fill="none" stroke="#3ecf8e" stroke-width="3"/>
+        <!-- Iris/pupille -->
+        <line x1="160" y1="100" x2="160" y2="160" stroke="#a47fe0" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <!-- Cristallin -->
+        <ellipse cx="195" cy="130" rx="20" ry="30" fill="none" stroke="#f7d154" stroke-width="2"/>
+        <!-- Corps vitré -->
+        <ellipse cx="260" cy="130" rx="80" ry="75" fill="rgba(79,142,247,0.04)" stroke="none"/>
+        <!-- Rétine (intérieur) -->
+        <ellipse cx="240" cy="130" rx="100" ry="90" fill="none" stroke="#f5a623" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <!-- Nerf optique -->
+        <rect x="345" y="118" width="30" height="24" rx="4" fill="#e85d5d" opacity="0.7"/>
+        <line x1="350" y1="130" x2="390" y2="130" stroke="#e85d5d" stroke-width="3"/>
+        <!-- Macula -->
+        <circle cx="310" cy="130" r="8" fill="rgba(247,209,84,0.3)" stroke="#f7d154" stroke-width="1.5"/>
+        <!-- Labels -->
+        <text x="128" y="128" fill="#3ecf8e" font-size="10" font-family="monospace">Cornée</text>
+        <text x="162" y="90" fill="#a47fe0" font-size="10" font-family="monospace">Iris</text>
+        <text x="180" y="175" fill="#f7d154" font-size="10" font-family="monospace">Cristallin</text>
+        <text x="225" y="70" fill="#f5a623" font-size="10" font-family="monospace">Rétine</text>
+        <text x="297" y="118" fill="#f7d154" font-size="10" font-family="monospace">Macula</text>
+        <text x="340" y="110" fill="#e85d5d" font-size="10" font-family="monospace">Nerf optique</text>
+        <text x="205" y="125" fill="#8b90a8" font-size="9" font-family="monospace">Corps</text>
+        <text x="205" y="137" fill="#8b90a8" font-size="9" font-family="monospace">vitré</text>
+        <!-- Chambre antérieure -->
+        <text x="148" y="195" fill="#8b90a8" font-size="9" font-family="monospace">Ch. antérieure</text>
+        <text x="148" y="207" fill="#8b90a8" font-size="9" font-family="monospace">(humor aqueux)</text>
+        <!-- Angle irido-cornéen -->
+        <text x="60" y="145" fill="#4f8ef7" font-size="9" font-family="monospace">Angle</text>
+        <text x="50" y="157" fill="#4f8ef7" font-size="9" font-family="monospace">irido-cornéen</text>
+        <line x1="110" y1="152" x2="148" y2="135" stroke="#4f8ef7" stroke-width="0.8"/>
+        <!-- Choroïde -->
+        <text x="240" y="240" fill="#8b90a8" font-size="9" font-family="monospace">↑ Choroïde (entre sclère et rétine)</text>
+      </svg>
+      <div class="svg-caption">Coupe schématique de l'œil — structures à connaître</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Examen ophtalmologique — étapes</div>
+    <div class="schema">
+INTERROGATOIRE
+  ├── Motif : BAV (aiguë/chronique), douleur, RPM, diplopie, phosphènes
+  ├── ATCD perso/familiaux glaucome, myopie forte, diabète, HTA
+  └── Traitements (corticoïdes → cataracte, chloroquine → rétinopathie)
+
+ACUITÉ VISUELLE (AV)
+  ├── De loin : échelle de Monoyer (lettres) → 10/10 = normale
+  ├── De près : échelle de Parinaud (P2 = 20/10 excellent, P14 = minimum)
+  ├── Trou sténopéique : si AV s'améliore → trouble réfractif (non amblyopie)
+  └── AV sans/avec correction (AVSC/AVAC)
+
+RÉFRACTION (skiascopie, autoréfractomètre)
+  └── Subjective : correction optimale par verres correcteurs
+
+TONUS OCULAIRE (TO)
+  ├── Normal : 10–21 mmHg (Goldmann = référence)
+  ├── Tonomètre à air (screening) → confirmer par Goldmann si élevé
+  └── Pachymétrie (épaisseur cornéenne) → ajuste l'interprétation du TO
+
+BIOMICROSCOPIE (lampe à fente)
+  ├── Segment antérieur : conjonctive, cornée, chambre ant., iris, cristallin
+  └── Examen fond d'œil (après dilatation si possible)
+      ├── Papille (=tête du nerf optique) : rapport C/D, bords, couleur
+      ├── Macula (zone centrale, 0°) : reflet fovéolaire
+      ├── Vaisseaux : calibre A/V, croisements
+      └── Rétine périphérique</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Sémiologie des signes fonctionnels</div>
+    <table>
+      <tr><th>Symptôme</th><th>Définition</th><th>Étiologies clés</th></tr>
+      <tr><td><strong>BAV aiguë</strong></td><td>Perte de vision brutale (< 24h)</td><td>Décollement rétine, OACR, OVCR, NOIA, glaucome aigu, corps vitré</td></tr>
+      <tr><td><strong>BAV chronique</strong></td><td>Perte progressive des semaines/mois</td><td>DMLA, cataracte, glaucome, rétinopathie diabétique</td></tr>
+      <tr><td><strong>Phosphènes</strong></td><td>Éclairs lumineux</td><td>Décollement postérieur du vitré, déchirure rétinienne</td></tr>
+      <tr><td><strong>Myodésopsies</strong></td><td>"Corps flottants" dans le champ visuel</td><td>DPV (bénin), hémorragie vitrée, uvéite</td></tr>
+      <tr><td><strong>Métamorphopsies</strong></td><td>Déformation des lignes droites</td><td>DMLA exsudative, membrane épirétinienne</td></tr>
+      <tr><td><strong>Scotome</strong></td><td>Zone aveugle dans le champ visuel</td><td>Glaucome (scotome arciforme), DMLA (scotome central), névrite optique</td></tr>
+      <tr><td><strong>Halos colorés</strong></td><td>Auréoles irisées autour des lumières</td><td>Glaucome aigu par fermeture d'angle +++</td></tr>
+      <tr><td><strong>Douleur</strong></td><td>Oculaire ou péri-oculaire</td><td>Glaucome aigu, kératite, uvéite antérieure, corps étranger</td></tr>
+      <tr><td><strong>Diplopie</strong></td><td>Vision double</td><td>Paralysie oculomotrice, strabisme décompensé</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Le fond d'œil — ce qu'il faut savoir lire</div>
+    <div class="svg-wrap">
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="max-height:250px">
+        <!-- Fond d'œil schématique -->
+        <circle cx="200" cy="150" r="140" fill="#1a0a0a" stroke="#3a1515" stroke-width="2"/>
+        <!-- Vaisseaux principaux -->
+        <path d="M200 150 Q150 100 100 70" stroke="#e85d5d" stroke-width="2.5" fill="none"/>
+        <path d="M200 150 Q150 200 100 230" stroke="#e85d5d" stroke-width="2" fill="none"/>
+        <path d="M200 150 Q250 100 300 70" stroke="#e85d5d" stroke-width="2.5" fill="none"/>
+        <path d="M200 150 Q250 200 300 230" stroke="#e85d5d" stroke-width="2" fill="none"/>
+        <!-- Veines (plus larges) -->
+        <path d="M200 150 Q145 95 95 65" stroke="#4f8ef7" stroke-width="3.5" fill="none" opacity="0.5"/>
+        <path d="M200 150 Q145 205 95 235" stroke="#4f8ef7" stroke-width="3" fill="none" opacity="0.5"/>
+        <path d="M200 150 Q255 95 305 65" stroke="#4f8ef7" stroke-width="3.5" fill="none" opacity="0.5"/>
+        <path d="M200 150 Q255 205 305 235" stroke="#4f8ef7" stroke-width="3" fill="none" opacity="0.5"/>
+        <!-- Papille -->
+        <circle cx="200" cy="150" r="28" fill="#f5a623" opacity="0.8"/>
+        <circle cx="200" cy="150" r="12" fill="#1a0a0a" stroke="#f5a623" stroke-width="1"/>
+        <!-- Cup (excavation) -->
+        <text x="194" y="154" fill="#f5a623" font-size="8" font-family="monospace">C/D</text>
+        <!-- Macula -->
+        <circle cx="300" cy="150" r="18" fill="rgba(247,209,84,0.15)" stroke="#f7d154" stroke-width="1.5"/>
+        <circle cx="300" cy="150" r="4" fill="#f7d154" opacity="0.7"/>
+        <!-- Labels -->
+        <text x="175" y="115" fill="#f5a623" font-size="11" font-family="monospace">Papille</text>
+        <text x="170" y="127" fill="#8b90a8" font-size="9" font-family="monospace">(rapport C/D ≤ 0.3)</text>
+        <text x="318" y="148" fill="#f7d154" font-size="11" font-family="monospace">Macula</text>
+        <text x="316" y="160" fill="#8b90a8" font-size="9" font-family="monospace">Fovéa ●</text>
+        <!-- Artères/veines légende -->
+        <line x1="30" y1="30" x2="60" y2="30" stroke="#e85d5d" stroke-width="2.5"/>
+        <text x="65" y="34" fill="#e85d5d" font-size="10" font-family="monospace">Artères</text>
+        <line x1="30" y1="48" x2="60" y2="48" stroke="#4f8ef7" stroke-width="3.5"/>
+        <text x="65" y="52" fill="#4f8ef7" font-size="10" font-family="monospace">Veines</text>
+        <!-- Rappel rapport artério-veineux -->
+        <text x="30" y="280" fill="#8b90a8" font-size="9" font-family="monospace">Calibre A/V normal = 2/3 · Signe de croisement (Keith-Wagener-Barker en HTA)</text>
+      </svg>
+      <div class="svg-caption">Fond d'œil normal — orientation et structures à identifier</div>
+    </div>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>🟠 Papille normale</h4>
+        <ul>
+          <li>Ronde, bords nets, couleur rose-orangée</li>
+          <li>Rapport C/D (cup/disc) ≤ 0,3</li>
+          <li>Vaisseaux émergeant du centre</li>
+          <li>Excavation physiologique centrale</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>🟡 Macula normale</h4>
+        <ul>
+          <li>À 2 diamètres papillaires en temporal</li>
+          <li>Fovéa = point de fixation (cônes purs)</li>
+          <li>Reflet fovéolaire présent chez le jeune</li>
+          <li>Zone avasculaire centrale (ZAC)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Reflexe Pupillaire à la Lumière (RPM) — clé diagnostique</div>
+    <div class="schema">
+RÉFLEXE PHOTOMOTEUR (RPM)
+  Voie afférente  : Rétine → NO → chiasma → bandelette optique → CGL → aire 17
+  Voie efférente  : III (parasympathique) → muscle sphincter de l'iris
+
+DÉFICIT PUPILLAIRE AFFÉRENT (DPA) = signe de Marcus Gunn
+  → Éclairer l'œil sain  : mydriase réflexe de l'œil sain PUIS myosis consensuel
+  → Éclairer l'œil lésé  : les DEUX pupilles se dilatent (réduction du signal afférent)
+  
+  Causes : névrite optique, lésion rétinienne majeure
+  ⚠ PAS de DPA dans les lésions uniquement du segment antérieur
+
+ANISOCORIE
+  ├── Mydriase unilatérale
+  │   ├── Paralysie du III (pupille aréactive + ptosis + déviation en bas-dehors)
+  │   └── Atropine locale (pharmacologique)
+  └── Myosis unilatéral
+      └── Syndrome de Claude Bernard-Horner : ptosis + myosis + enophtalmie
+          (lésion de la voie sympathique cervico-thoracique)</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM fréquents</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>L'<strong>acuité visuelle s'améliore avec le trou sténopéique</strong> → c'est un trouble réfractif (myopie, hypermétropie, astigmatisme) et NON une amblyopie organique. Le sténopéique ne corrige pas l'amblyopie fonctionnelle.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>La <strong>vision des couleurs</strong> (Ishihara) est altérée dans les neuropathies optiques AVANT la BAV. C'est un signe précoce de pathologie du nerf optique.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p><strong>TO normal ≠ pas de glaucome</strong> : le glaucome à pression normale existe (15–20% des glaucomes). Et TO élevé ≠ glaucome systématiquement (HTO).</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('semiologie')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CH2 — RÉFRACTION
+═══════════════════════════════════════════════════════════ -->
+<div id="ch-refraction" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(62,207,142,0.15)">👓</div>
+    <div>
+      <h2>Troubles de la réfraction</h2>
+      <div class="subtitle">Myopie · Hypermétropie · Astigmatisme · Presbytie</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Classification et mécanismes</div>
+    <div class="svg-wrap">
+      <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg" style="max-height:200px">
+        <!-- Emmétrope -->
+        <text x="70" y="18" fill="#3ecf8e" font-size="11" font-family="monospace" font-weight="bold">Emmétrope</text>
+        <line x1="20" y1="50" x2="140" y2="50" stroke="#4f8ef7" stroke-width="1" stroke-dasharray="2,2"/>
+        <path d="M20 40 L80 50 L20 60" fill="none" stroke="#f7d154" stroke-width="1.5"/>
+        <path d="M100 30 L85 50 L100 70" fill="none" stroke="#3a3a60" stroke-width="1.5"/>
+        <circle cx="140" cy="50" r="8" fill="none" stroke="#4f8ef7" stroke-width="1.5"/>
+        <line x1="135" y1="42" x2="145" y2="58" stroke="#e85d5d" stroke-width="2"/>
+        <text x="30" y="85" fill="#3ecf8e" font-size="9" font-family="monospace">Foyer sur la rétine ✓</text>
+
+        <!-- Myope -->
+        <text x="220" y="18" fill="#e85d5d" font-size="11" font-family="monospace" font-weight="bold">Myope</text>
+        <line x1="170" y1="50" x2="310" y2="50" stroke="#4f8ef7" stroke-width="1" stroke-dasharray="2,2"/>
+        <path d="M170 40 L230 50 L170 60" fill="none" stroke="#f7d154" stroke-width="1.5"/>
+        <path d="M250 25 L235 50 L250 75" fill="none" stroke="#3a3a60" stroke-width="1.5"/>
+        <circle cx="310" cy="50" r="8" fill="none" stroke="#4f8ef7" stroke-width="1.5"/>
+        <!-- Point de convergence AVANT rétine -->
+        <circle cx="275" cy="50" r="3" fill="#e85d5d"/>
+        <line x1="275" y1="50" x2="310" y2="45" stroke="#e85d5d" stroke-width="1" stroke-dasharray="2,2"/>
+        <line x1="275" y1="50" x2="310" y2="55" stroke="#e85d5d" stroke-width="1" stroke-dasharray="2,2"/>
+        <text x="175" y="85" fill="#e85d5d" font-size="9" font-family="monospace">Foyer AVANT rétine → flou loin</text>
+        <text x="175" y="97" fill="#8b90a8" font-size="9" font-family="monospace">Correction : verre divergent (−)</text>
+
+        <!-- Hypermétrope -->
+        <text x="360" y="18" fill="#f5a623" font-size="11" font-family="monospace" font-weight="bold">Hypermétrope</text>
+        <line x1="340" y1="50" x2="480" y2="50" stroke="#4f8ef7" stroke-width="1" stroke-dasharray="2,2"/>
+        <path d="M340 40 L400 50 L340 60" fill="none" stroke="#f7d154" stroke-width="1.5"/>
+        <path d="M415 30 L402 50 L415 70" fill="none" stroke="#3a3a60" stroke-width="1.5"/>
+        <circle cx="465" cy="50" r="8" fill="none" stroke="#4f8ef7" stroke-width="1.5"/>
+        <circle cx="490" cy="50" r="3" fill="#f5a623"/>
+        <line x1="462" y1="45" x2="490" y2="50" stroke="#f5a623" stroke-width="1" stroke-dasharray="2,2"/>
+        <line x1="462" y1="55" x2="490" y2="50" stroke="#f5a623" stroke-width="1" stroke-dasharray="2,2"/>
+        <text x="343" y="85" fill="#f5a623" font-size="9" font-family="monospace">Foyer DERRIÈRE rétine → flou près</text>
+        <text x="343" y="97" fill="#8b90a8" font-size="9" font-family="monospace">Correction : verre convergent (+)</text>
+      </svg>
+      <div class="svg-caption">Mécanismes des amétropies sphériques</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Les 4 amétropies</div>
+    <table>
+      <tr><th>Amétropie</th><th>Mécanisme</th><th>Symptôme principal</th><th>Correction</th><th>⚠ Risques</th></tr>
+      <tr>
+        <td><strong>Myopie</strong></td>
+        <td>Œil trop long OU cornée trop courbée. Foyer en AVANT de la rétine</td>
+        <td>Flou de LOIN, vision de près correcte</td>
+        <td>Verre <strong>divergent (−)</strong>, lentilles, chirurgie réfractive (PKR, LASIK)</td>
+        <td>Myopie forte (≥ 6D) : risque décollement rétine, néovx sous-rétiniens, glaucome</td>
+      </tr>
+      <tr>
+        <td><strong>Hypermétropie</strong></td>
+        <td>Œil trop court. Foyer en ARRIÈRE de la rétine. Accommodation compense</td>
+        <td>Asthénopie (fatigue visuelle), céphalées, flou si fort. Enfant : strabisme convergent</td>
+        <td>Verre <strong>convergent (+)</strong></td>
+        <td>Strabisme chez l'enfant +++, glaucome par fermeture d'angle (chambre ant. étroite)</td>
+      </tr>
+      <tr>
+        <td><strong>Astigmatisme</strong></td>
+        <td>Cornée torique (non sphérique). 2 foyers différents. Régulier ou irrégulier</td>
+        <td>Flou à toutes distances, distorsion des contours</td>
+        <td>Verre <strong>cylindrique</strong> (torique)</td>
+        <td>Si irrégulier : kératocône (→ cross-linking)</td>
+      </tr>
+      <tr>
+        <td><strong>Presbytie</strong></td>
+        <td>Perte d'élasticité du cristallin (≥ 40 ans). Réduction de l'accommodation</td>
+        <td>Flou de PRÈS progressif, allongement du bras de lecture</td>
+        <td>Verres <strong>progressifs</strong> ou deux paires. Chirurgie possible</td>
+        <td>Physiologique. Révèle une hypermétropie latente</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Accommodation — notions clés</div>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Mécanisme de l'accommodation</h4>
+        <ul>
+          <li>Contraction du muscle ciliaire</li>
+          <li>Relâchement des fibres zonulaires</li>
+          <li>Cristallin s'arrondit → ↑ puissance convergente</li>
+          <li>Maximum chez l'enfant (~14 dioptries)</li>
+          <li>Diminue progressivement (presbytie)</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Triade de près (syncinésie)</h4>
+        <ul>
+          <li><strong>Accommodation</strong> (cristallin)</li>
+          <li><strong>Convergence</strong> (droits internes)</li>
+          <li><strong>Myosis</strong> (sphincter irien)</li>
+          <li>→ Ces 3 mécanismes sont couplés</li>
+          <li>⚠ Paralysie du III = perte des 3</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Chirurgie réfractive — essentiel</div>
+    <table>
+      <tr><th>Technique</th><th>Principe</th><th>Indication</th><th>Contre-indication</th></tr>
+      <tr><td><strong>PKR</strong> (photoablation kératoréfractive)</td><td>Ablation épithélium + laser excimer sur stroma antérieur</td><td>Myopie faible, cornée fine</td><td>Kératocône, épaisseur cornéenne insuffisante</td></tr>
+      <tr><td><strong>LASIK</strong></td><td>Volet stromal (microkératome ou femtoseconde) + laser dessous</td><td>Myopie modérée, hypermétropie, astigmatisme</td><td>Cornée trop fine, kératocône, sécheresse sévère</td></tr>
+      <tr><td><strong>SMILE</strong></td><td>Lenticule intrastromal extrait par petite incision</td><td>Myopie</td><td>Idem LASIK</td></tr>
+      <tr><td><strong>Implant phakie</strong></td><td>Implant phakique en chambre antérieure ou postérieure</td><td>Myopie forte > 8D</td><td>Chambre ant. étroite, cellules endothéliales basses</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>La <strong>myopie forte</strong> (≥ 6 dioptries) est une cause de décollement de rétine → examiner la périphérie rétinienne en cas de phosphènes chez un myope fort.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>L'<strong>hypermétropie</strong> peut rester asymptomatique longtemps grâce à l'accommodation. Elle peut se décompenser à l'âge adulte (grossesse, fatigue) ou révéler un strabisme convergent chez l'enfant.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>La <strong>presbytie</strong> débute vers 40 ans mais est plus précoce chez les hypermétropes et plus tardive chez les myopes (qui "voient" de près sans correction).</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('refraction')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CH3 — NOURRISSON
+═══════════════════════════════════════════════════════════ -->
+<div id="ch-nourrisson" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(62,207,142,0.15)">👶</div>
+    <div>
+      <h2>Suivi ophtalmologique du nourrisson</h2>
+      <div class="subtitle">Dépistage · Développement visuel · Pathologies néonatales</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Développement visuel normal</div>
+    <div class="schema">
+NAISSANCE
+  ├── AV : 1/10 (lointaine) — Perçoit la lumière, visage à 20 cm
+  ├── Fixation : absente ou brève
+  └── Pupilles réactives
+
+J10
+  └── Début du réflexe de fixation
+
+2 MOIS
+  ├── Fixation + poursuite oculaire (suit un visage)
+  ├── Sourire-réponse visuel
+  └── Début de la fusion binoculaire
+
+4 MOIS
+  └── Vision stéréoscopique qui s'installe
+
+6 MOIS
+  └── AV ≈ 3/10 — Fusion binoculaire établie
+
+1 AN
+  └── AV ≈ 6/10 — Strabisme physiologique résolu
+
+3-4 ANS
+  └── AV = 10/10 — Acuité mature
+  
+⚠ PÉRIODE SENSIBLE = 0-7 ans (plasticité cérébrale maximale)
+  → Toute privation visuelle pendant cette période = RISQUE AMBLYOPIE</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Examens obligatoires et calendrier</div>
+    <table>
+      <tr><th>Âge</th><th>Examen</th><th>Ce qu'on cherche</th></tr>
+      <tr><td><strong>Naissance</strong></td><td>Examen néonatal (pédiatre)</td><td>Leucocorie, malformations, glaucome congénital (cornée opaque/grande), cataracte congénitale (reflet rouge absent)</td></tr>
+      <tr><td><strong>M1</strong></td><td>Reflet pupillaire rouge</td><td>Cataracte, rétinoblastome (reflet blanc = leucocorie)</td></tr>
+      <tr><td><strong>M4</strong></td><td>Inspection + RPM + poursuite oculaire</td><td>Strabisme, nystagmus</td></tr>
+      <tr><td><strong>M9</strong></td><td>Examen ophtalmo recommandé</td><td>Strabisme, trouble réfractif important</td></tr>
+      <tr><td><strong>3 ans</strong></td><td>Test AV (Cadet, LEA, PIGASSOU)</td><td>Amblyopie, strabisme, trouble réfractif</td></tr>
+      <tr><td><strong>6 ans</strong></td><td>Test AV binoculaire et monoculaire</td><td>Amblyopie fonctionnelle résiduelle</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Pathologies urgentes du nourrisson</div>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4 style="color:#e85d5d">⚠ Rétinoblastome</h4>
+        <ul>
+          <li>Tumeur maligne rétinienne (enfant < 5 ans)</li>
+          <li>Signe d'appel : <strong>leucocorie</strong> (reflet blanc pupillaire = "œil de chat")</li>
+          <li>Bilatéral dans 40% (forme héréditaire, gène Rb1)</li>
+          <li>Strabisme possible</li>
+          <li>URGENCE diagnostique → fond d'œil sous AG</li>
+          <li>Pronostic vital : évolution locale + métastatique</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4 style="color:#e85d5d">⚠ Glaucome congénital</h4>
+        <ul>
+          <li>Triade : larmoiement, photophobie, <strong>buphtalmie</strong> (grand œil)</li>
+          <li>Cornée grande (diamètre > 12 mm), trouble, stries de Haab</li>
+          <li>TO élevé → atrophie nerveuse progressive</li>
+          <li>Traitement chirurgical (trabéculotomie/goniotomie)</li>
+          <li>⚠ Œil normal à la naissance peut évoluer</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4 style="color:#f5a623">Cataracte congénitale</h4>
+        <ul>
+          <li>Reflet rouge pupillaire <strong>absent</strong> ou asymétrique</li>
+          <li>URGENCE : traitement avant 2 mois si unilatérale dense</li>
+          <li>Causes : idiopathique, génétique, rubéole congénitale, galactosémie, trisomie 21</li>
+          <li>Post-op : correction optique + rééducation amblyopie</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4 style="color:#f5a623">Rétinopathie du prématuré (ROP)</h4>
+        <ul>
+          <li>Prématurés < 31 SA et/ou < 1500g</li>
+          <li>Néovascularisation rétinienne (hypoxie relative → VEGF)</li>
+          <li>Dépistage : fond d'œil à partir de 31 SA</li>
+          <li>Traitement : laser ou anti-VEGF si stade sévère</li>
+          <li>Risque : décollement de rétine tractionnel</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Leucocorie — arbre diagnostique</div>
+    <div class="schema">
+LEUCOCORIE (reflet blanc dans la pupille)
+  │
+  ├── < 1 an, bilatérale ou unilatérale
+  │   ├── Cataracte congénitale ← cause la plus fréquente
+  │   ├── Persistance du vitré primitif
+  │   └── Rétinoblastome ← toujours éliminer
+  │
+  ├── Prématuré : Rétinopathie du prématuré
+  │
+  └── Plus grand enfant :
+      ├── Rétinoblastome (< 5 ans)
+      ├── Toxocarose oculaire
+      └── Colobome rétinien, maladie de Coats
+
+⚠ TOUTE leucocorie = fond d'œil sous AG en URGENCE</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>Un <strong>strabisme non alternant</strong> chez l'enfant de 2 ans est une urgence thérapeutique → risque d'amblyopie irréversible. Ne pas rassurer les parents en disant "ça va passer".</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>La <strong>cataracte congénitale unilatérale dense</strong> doit être opérée AVANT 2 mois (idéalement avant 6 semaines) pour éviter une amblyopie profonde irréversible de l'œil stoppé dans son développement.</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('nourrisson')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CH4 — STRABISME
+═══════════════════════════════════════════════════════════ -->
+<div id="ch-strabisme" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(124,92,191,0.15)">👀</div>
+    <div>
+      <h2>Strabisme et Amblyopie de l'enfant</h2>
+      <div class="subtitle">Dépistage · Mécanismes · Traitement par étapes</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Définitions essentielles</div>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Strabisme</h4>
+        <p>Défaut d'alignement des axes visuels des deux yeux. Les axes ne convergent pas vers le même point de fixation.</p>
+        <ul style="margin-top:6px">
+          <li><strong>Ésotropie</strong> = déviation en dedans (convergent)</li>
+          <li><strong>Exotropie</strong> = déviation en dehors (divergent)</li>
+          <li><strong>Hyperphorie</strong> = déviation verticale</li>
+          <li>Concomitant (angle identique dans toutes positions) vs paralytique</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Amblyopie</h4>
+        <p>Réduction de l'AV d'un œil (unilat ou bilat) due à un défaut de stimulation sensorielle pendant la période sensible (0-7 ans).</p>
+        <ul style="margin-top:6px">
+          <li><strong>Fonctionnelle</strong> : absence de lésion organique → réversible si traité tôt</li>
+          <li><strong>Organique</strong> : lésion (cataracte, colobome) → moins réversible</li>
+          <li>Diagnostic : AV différente entre les 2 yeux (≥ 2 lignes)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Classification du strabisme</div>
+    <table>
+      <tr><th>Type</th><th>Âge habituel</th><th>Caractéristiques</th><th>Cause principale</th></tr>
+      <tr><td><strong>Ésotropie précoce</strong> (infantile)</td><td>< 6 mois</td><td>Grand angle, alternant, nystagmus latent possible</td><td>Idiopathique</td></tr>
+      <tr><td><strong>Ésotropie accommodative</strong></td><td>2-3 ans</td><td>Lié à l'effort d'accommodation, angle variable</td><td>Hypermétropie non corrigée +++</td></tr>
+      <tr><td><strong>Exotropie</strong></td><td>Variable</td><td>Intermittent au début, se décompense</td><td>Idiopathique, myopie forte</td></tr>
+      <tr><td><strong>Strabisme paralytique</strong></td><td>Tout âge</td><td>Angle variable selon direction du regard, DIPLOPIE</td><td>Paralysie oculomotrice (III, IV, VI)</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Tests diagnostiques — examen du strabisme</div>
+    <div class="schema">
+COVER TEST (test à l'occlusion)
+  1. Cover test unilatéral :
+     – Cacher l'œil directeur → l'œil dévié se redresse
+     – Signe : le strabisme existe
+
+  2. Alternating cover test :
+     – Cacher alternativement chaque œil → mouvement de redressement
+     – Quantifie la déviation (ésophorie, exophorie)
+     – Un strabisme LATENT (phorie) peut se révéler
+
+  3. Reflet cornéen de Hirschberg :
+     – Lumière centrée → reflet symétrique au centre de la pupille
+     – Reflet décentré → strabisme
+     – 1 mm de décentrement = ~7° de déviation
+
+TEST DES PRISMES (cover prism test)
+     – Mesure l'angle de déviation en dioptries prismatiques</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Prise en charge — étapes chronologiques</div>
+    <div class="schema">
+ÉTAPE 1 : CORRECTION OPTIQUE COMPLÈTE
+  → Porter la correction en permanence (si hypermétropie → peut corriger le strabisme accommodatif)
+  → Attendre 3-6 mois pour juger l'effet optique
+
+ÉTAPE 2 : TRAITEMENT DE L'AMBLYOPIE
+  → Occlusion (cache) de l'œil DOMINANT (directeur) pour forcer l'utilisation de l'œil amblyope
+  → Durée selon l'âge et la profondeur de l'amblyopie
+  → Alternatives : pénalisation optique (atropine dans l'œil directeur)
+  → EFFICACE uniquement avant 7-9 ans (période plastique)
+
+ÉTAPE 3 : CHIRURGIE MUSCULAIRE (si strabisme résiduel après correction optique)
+  → Recul (affaiblissement) ou résection (renforcement) des muscles
+  → Buts : esthétique, fonctionnel (vision binoculaire si possible)
+  → Ne se substitue pas à la correction optique
+
+⚠ URGENCE : strabisme aigu du jeune enfant → éliminer une cause organique (tumeur cérebrale)</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>L'<strong>épicanthus</strong> (repli cutané nasal) donne l'apparence d'un strabisme convergent (pseudo-strabisme) alors que le cover test est négatif et les reflets cornéens sont centrés. Ne pas opérer !</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>Un strabisme convergent + <strong>hypermétropie</strong> : toujours prescrire la lunettes AVANT d'opérer. La correction optique peut suffire (strabisme accommodatif).</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>L'amblyopie fonctionnelle est <strong>réversible</strong> si traitée avant 7-9 ans. Après la fin de la période sensible, l'occlusion n'améliore plus l'AV.</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('strabisme')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CH5 — DIPLOPIE
+═══════════════════════════════════════════════════════════ -->
+<div id="ch-diplopie" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(232,93,93,0.15)">👁️</div>
+    <div>
+      <h2>Diplopie</h2>
+      <div class="subtitle">Monoculaire vs binoculaire · Paralysies oculomotrices · III, IV, VI</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Premier réflexe : monoculaire ou binoculaire ?</div>
+    <div class="schema">
+DIPLOPIE
+  │
+  ├── MONOCULAIRE (persiste à l'occlusion d'un œil)
+  │   ├── Cause OCULAIRE locale (cataracte, luxation cristallin, astigmatisme irrégulier)
+  │   └── Psychogène
+  │
+  └── BINOCULAIRE (disparaît à l'occlusion d'un œil)
+      └── PARALYSIE OCULOMOTRICE → cause neuromusculaire
+          ├── III (oculomoteur commun)
+          ├── IV (trochléaire/pathétique)
+          └── VI (abducens)
+          Et aussi : myasthénie, ophtalmoplégie internucléaire (SEP), dysthyroïdie</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Les 3 paralysies oculomotrices</div>
+    <table>
+      <tr><th>Nerf</th><th>Muscles innervés</th><th>Présentation</th><th>Étiologies clés</th></tr>
+      <tr>
+        <td><strong>III (complet)</strong></td>
+        <td>Droit sup/inf/médial, oblique inf, releveur paupière, sphincter iris</td>
+        <td>
+          • Ptosis (releveur)<br>
+          • Œil en bas et en dehors (droit lat + oblique sup préservés)<br>
+          • Mydriase aréactive (atteinte parasympath externe)<br>
+          • Diplopie dans presque toutes directions
+        </td>
+        <td>
+          • Anévrisme communication postérieure <strong>+++</strong> (mydriase = signe d'alarme)<br>
+          • Diabète (ischémie, épargne pupillaire souvent)<br>
+          • HIC (engagement temporal)<br>
+          • Tumeur
+        </td>
+      </tr>
+      <tr>
+        <td><strong>IV (trochléaire)</strong></td>
+        <td>Oblique supérieur (= grand oblique)</td>
+        <td>
+          • Diplopie verticale ou oblique<br>
+          • Incyclotropie<br>
+          • Inclinaison compensatrice de la tête (torticolis oculaire) du côté opposé<br>
+          • Aggravée en regardant en bas et en dedans
+        </td>
+        <td>
+          • Traumatique (frontale) +++<br>
+          • Congénital (décompensation tardive)<br>
+          • Vasculaire, tumeur
+        </td>
+      </tr>
+      <tr>
+        <td><strong>VI (abducens)</strong></td>
+        <td>Droit latéral</td>
+        <td>
+          • Diplopie horizontale (HOMONYME)<br>
+          • Ésotropie (convergence de l'œil atteint)<br>
+          • Déficit d'abduction<br>
+          • Tête tournée du côté atteint (compenser)
+        </td>
+        <td>
+          • HTIC (signe de faux localisation !!!)<br>
+          • AVC du tronc cérébral<br>
+          • SEP, diabète, tumeur, méningite<br>
+          • Idiopathique (le plus fréquent chez l'adulte)
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Autres causes de diplopie binoculaire</div>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Myasthénie oculaire</h4>
+        <ul>
+          <li>Ptosis fluctuant, variable dans la journée</li>
+          <li>Diplopie variable (fatiguable)</li>
+          <li>Aggravation le soir, amélioration le matin</li>
+          <li>Test au glaçon positif (améliore le ptosis)</li>
+          <li>Ac anti-RAch, ENMG (décrément)</li>
+          <li>Scanner thoracique (thymome)</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Ophtalmoplégie internucléaire (OIN)</h4>
+        <ul>
+          <li>Lésion du faisceau longitudinal médial (FLM)</li>
+          <li>Déficit d'adduction de l'œil ipsilatéral</li>
+          <li>Nystagmus abducteur de l'œil controlatéral</li>
+          <li>Convergence PRÉSERVÉE (distingue de la paralysie du III)</li>
+          <li><strong>Étiologie ++ : SEP</strong> (bilatéral), AVC chez personne âgée</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Orbitopathie dysthyroïdienne</h4>
+        <ul>
+          <li>Fibrose des muscles oculomoteurs</li>
+          <li>Atteinte du droit inférieur +++ → diplopie verticale</li>
+          <li>Contexte : Basedow, exophtalmie</li>
+          <li>Test de Lancaster pour cartographier</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Strabisme décompensé</h4>
+        <ul>
+          <li>Phorie (strabisme latent) → tropie en cas de fatigue, maladie</li>
+          <li>Antécédent de strabisme dans l'enfance</li>
+          <li>Diplopie transitoire au début</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Urgence absolue</div>
+      <p><strong>Paralysie du III avec mydriase</strong> = anévrisme de la communication postérieure jusqu'à preuve du contraire → angioTDM/angioIRM en URGENCE. Ne pas attendre une IRM standard si délai.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>Paralysie du <strong>VI isolée</strong> = signe de faux localisation en cas d'HTIC (le VI a le plus long trajet intracrânien). Toujours éliminer une HTIC avant de conclure à une atteinte directe du VI.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>La <strong>myasthénie</strong> simule toutes les paralysies oculomotrices, surtout si variable et bilatérale. Y penser devant tout ptosis ou diplopie fluctuants.</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('diplopie')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CH6 — INFECTIONS & INFLAMMATIONS
+═══════════════════════════════════════════════════════════ -->
+<div id="ch-infections" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(62,207,142,0.15)">🦠</div>
+    <div>
+      <h2>Infections & Inflammations oculaires</h2>
+      <div class="subtitle">Conjonctivite · Kératite · Uvéite · Endophtalmie</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Orientation diagnostique rapide — œil rouge</div>
+    <div class="schema">
+ŒIL ROUGE
+  │
+  ├── DOULOUREUX ?
+  │   ├── OUI → pathologie grave potentielle
+  │   │   ├── + BAV : kératite, uvéite antérieure, glaucome aigu, endophtalmie
+  │   │   └── sans BAV initiale : épisclérite, sclérite
+  │   └── NON (œil rouge indolore)
+  │       └── + sécrétions : conjonctivite
+  │           ├── Purulentes → bactérienne
+  │           ├── Claires muqueuses → virale ou allergique
+  │           └── Prurit dominant → allergique
+  │
+  └── TYPE D'HYPERHÉMIE (injection) ?
+      ├── Conjonctivale (rouge en périphérie, blanc périkératique) → conjonctivite
+      ├── Périkératique (rouge autour de la cornée, blanche en périphérie) → uvéite, kératite
+      └── Mixte → glaucome aigu, endophtalmie</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Conjonctivites</div>
+    <table>
+      <tr><th>Type</th><th>Signes cliniques</th><th>Germes / causes</th><th>Traitement</th></tr>
+      <tr>
+        <td><strong>Bactérienne</strong></td>
+        <td>Sécrétions purulentes +++, paupières collées le matin, bilatéral</td>
+        <td>Staphylocoque, Streptocoque, H. influenzae</td>
+        <td>Collyres antibiotiques (fluoroquinolone, aminoside). Souvent guérison spontanée</td>
+      </tr>
+      <tr>
+        <td><strong>Bactérienne sévère</strong><br>(gonocoque, chlamydia)</td>
+        <td>Hyperpurulente (coulée purulente), risque de perforation cornéenne (gonocoque). Adulte jeune (IST)</td>
+        <td>Neisseria gonorrhoeae, Chlamydia trachomatis</td>
+        <td>Gonocoque : ceftriaxone IM + lavages. Chlamydia : doxycycline PO 3 semaines. Traiter partenaire</td>
+      </tr>
+      <tr>
+        <td><strong>Virale</strong></td>
+        <td>Sécrétions claires, ADP prétragienne, kératite ponctuée superficielle possible</td>
+        <td>Adénovirus (+++), Entérovirus (conjonctivite hémorragique)</td>
+        <td>Symptomatique. Très contagieux → mesures d'hygiène strictes. Pas d'antibiotique</td>
+      </tr>
+      <tr>
+        <td><strong>Allergique</strong></td>
+        <td>Prurit intense +++, papilles géantes, chémosis, bilatéral, saisonnier</td>
+        <td>Pollens, acariens, animaux</td>
+        <td>Antihistaminiques collyres/PO, cromoglycate. Éviction allergène</td>
+      </tr>
+      <tr>
+        <td><strong>Néonatale</strong></td>
+        <td>Ophtalmie du nouveau-né (J1-J14)</td>
+        <td>Gonocoque (J1-J3), Chlamydia (J5-J14), HSV</td>
+        <td>Prévention : collyre antibiotique à la naissance (Aureomycine)</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Kératites</div>
+    <table>
+      <tr><th>Type</th><th>Présentation</th><th>Traitement</th></tr>
+      <tr>
+        <td><strong>Bactérienne</strong> (ulcère cornéen)</td>
+        <td>Douleur intense, photophobie, œil rouge périkératique, ulcère blanc à la fluorescéine. Facteurs : lentilles +++, trauma, œil sec</td>
+        <td>Fluoroquinolone collyre (ciprofloxacine, ofloxacine) toutes les heures initialement. Hospitalisation si sévère. Contre-indication ABSOLUE aux corticoïdes locaux</td>
+      </tr>
+      <tr>
+        <td><strong>Herpétique (HSV)</strong></td>
+        <td>Ulcère dendritique (arborescent) à la fluorescéine, hypoesthésie cornéenne. Récidivant, peut évoluer en kératite profonde (disciforme)</td>
+        <td>Aciclovir collyre 5 fois/j (5 jours). Pas de corticoïdes en phase superficielle !</td>
+      </tr>
+      <tr>
+        <td><strong>Zostérienne (VZV)</strong></td>
+        <td>Zona ophtalmique : vésicules front/nez (signe de Hutchinson = atteinte cornéenne probable). Pseudo-dendrites, uvéite possible</td>
+        <td>Valaciclovir PO 7-10 jours. Avis ophtalmo</td>
+      </tr>
+      <tr>
+        <td><strong>Acanthamoeba</strong></td>
+        <td>Porteur de lentilles +++, douleur disproportionnée, anneau stromal, kératite pseudo-dendritique. Très grave, résistante</td>
+        <td>Biguanides (PHMB) + propamidine pendant des mois. Pronostic sévère</td>
+      </tr>
+      <tr>
+        <td><strong>Fongique</strong></td>
+        <td>Trauma végétal, infiltrat blanchâtre avec satellite, lent</td>
+        <td>Antifongiques (voriconazole). Difficile à traiter</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Uvéites</div>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Uvéite antérieure (iridocyclite)</h4>
+        <ul>
+          <li>Douleur, photophobie, baisse de vision</li>
+          <li>Injection périkératique</li>
+          <li>Précipités rétrocornéens (KP) à la lampe à fente</li>
+          <li>Effet Tyndall (cellules en chambre antérieure)</li>
+          <li>Synéchies irido-cristalliniennes</li>
+          <li><strong>Étiologies :</strong> HLA-B27, spondylarthropathies, sarcoïdose, Behçet, herpès, syphilis, idiopathique +++</li>
+          <li><strong>Traitement :</strong> corticoïdes locaux + mydriatiques (prévenir synéchies)</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Uvéite postérieure (choroïdite/rétinite)</h4>
+        <ul>
+          <li>Myodésopsies, BAV, scotomes</li>
+          <li>Peu de douleur</li>
+          <li>FO : foyer blanc rétinien, vascularite</li>
+          <li><strong>Toxoplasmose</strong> +++ (foyer satellite d'une ancienne cicatrice)</li>
+          <li>CMV (immunodéprimé → rétinite extensive en feu de prairie)</li>
+          <li>Sarcoïdose, Behçet, VKH</li>
+          <li>Bilan : NFS, ECA, TPHA/VDRL, IDR, RxT</li>
+        </ul>
+      </div>
+    </div>
+    <div class="alert alert-red">
+      <span class="alert-icon">🚨</span>
+      <div><strong>Endophtalmie</strong> : infection intra-oculaire (chambre antérieure + vitré). Urgence chirurgicale. Post-opératoire (J1-J7 après cataracte), traumatique ou endogène. Douleur intense + BAV majeure + hypopion. Vitrectomie + antibiotiques intravitréens en urgence.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p><strong>Kératite herpétique + corticoïdes</strong> = catastrophe. Les corticoïdes locaux sont contre-indiqués en phase superficielle. Ils peuvent transformer une kératite dendritique en ulcère profond perforant.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p><strong>Conjonctivite virale à adénovirus</strong> = très contagieuse, éviction scolaire/professionnelle, désinfection du matériel médical. Ne pas prescrire d'antibiotiques.</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('infections')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CH7 — ALTÉRATION CHRONIQUE
+═══════════════════════════════════════════════════════════ -->
+<div id="ch-chronique" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(245,166,35,0.15)">🌅</div>
+    <div><h2>Altération chronique de la vision</h2><div class="subtitle">Orientation diagnostique · DMLA · Cataracte · Glaucome · Rétinopathies</div></div>
+  </div>
+  <div class="section">
+    <div class="section-title">Arbre diagnostique — BAV chronique</div>
+    <div class="schema">
+BAV PROGRESSIVE (semaines/mois/années)
+  │
+  ├── ÂGÉE (> 50 ans)
+  │   ├── Vision centrale ↓ + métamorphopsies → DMLA
+  │   ├── Éblouissement, halos, pénombre → Cataracte
+  │   └── Vision périphérique ↓ insidieux → Glaucome chronique
+  │
+  ├── DIABÉTIQUE (tout âge)
+  │   └── Rétinopathie diabétique (grades multiples)
+  │
+  ├── MYOPE FORT
+  │   └── Myopie forte dégénérative, néovaisseaux
+  │
+  └── JEUNE
+      ├── Uvéite chronique
+      ├── Rétinite pigmentaire (héméralopie, champ tubulaire)
+      ├── Dystrophie rétinienne héréditaire
+      └── Névrite optique (SEP)</div>
+  </div>
+  <div class="section">
+    <div class="section-title">Tableau comparatif rapide</div>
+    <table>
+      <tr><th>Pathologie</th><th>Symptôme dominant</th><th>Examen clé</th><th>Traitement</th></tr>
+      <tr><td>Cataracte</td><td>Éblouissement, halos, flou progressif</td><td>Biomicroscopie (opacité cristallin)</td><td>Chirurgie (phacoémulsification)</td></tr>
+      <tr><td>DMLA sèche</td><td>Vision centrale ↓ progressive, drusen</td><td>FO, OCT maculaire</td><td>Suppléments AREDS2 (vit C, E, Zn, lutéine)</td></tr>
+      <tr><td>DMLA exsudative</td><td>Métamorphopsies, scotome central brutal</td><td>OCT + angiographie</td><td>Anti-VEGF intravitréens (ranibizumab, aflibercept)</td></tr>
+      <tr><td>Glaucome GPAO</td><td>Champ visuel périphérique ↓ (tardif)</td><td>TO + champ visuel + OCT nerf optique</td><td>Collyres hypotonisants (β-bloquants, prostaglandines)</td></tr>
+      <tr><td>Rétinopathie diabétique</td><td>Variable selon stade</td><td>FO annuel (dépistage)</td><td>Équilibration glycémique, laser, anti-VEGF</td></tr>
+    </table>
+  </div>
+  <div class="key-fact">⭐ Règle des 3 grandes causes de cécité en France (> 50 ans) : <strong>DMLA > Glaucome > Rétinopathie diabétique</strong></div>
+  <button class="done-btn" onclick="markDone('chronique')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CH8 — ALTÉRATION AIGUË
+═══════════════════════════════════════════════════════════ -->
+<div id="ch-aigue" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(232,93,93,0.15)">⚡</div>
+    <div><h2>Altération aiguë de la vision</h2><div class="subtitle">Urgences ophtalmologiques · Orientation diagnostique</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Arbre diagnostique — BAV brutale</div>
+    <div class="schema">
+BAV BRUTALE (minutes à heures)
+  │
+  ├── DOULOUREUSE
+  │   ├── + œil rouge + halos colorés + nausées → GLAUCOME AIGU PAR FERMETURE D'ANGLE
+  │   ├── + uvéite antérieure → Hypertonie uvéitique
+  │   └── + trauma → Traumatisme oculaire
+  │
+  └── INDOLORE
+      ├── Amaurose fugace (< 30 min, récupération totale)
+      │   ├── Embolie artère ophtalmique → AIT (urgence neuro-vasculaire)
+      │   └── Vasospasme (migraine ophtalmique, jeune femme)
+      │
+      ├── BAV permanente unilatérale sans douleur
+      │   ├── + scotome central → OACR ou OVCR centrale
+      │   ├── + voile noir (rideau qui monte/descend) → DÉCOLLEMENT DE RÉTINE
+      │   ├── + phosphènes + myodésopsies + DPV → Déchirure rétinienne
+      │   └── + flou central + dyschromatopsie → Neuropathie optique (NOIA, névrite)
+      │
+      └── BAV bilatérale
+          ├── Cortical (AVC occipital) → quadranopsie/hémianopsie
+          └── Méningite, HIC, intoxication</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Glaucome aigu par fermeture d'angle (GAFA) — fiche urgence</div>
+    <div class="urgence">🚨 URGENCE OPHTALMOLOGIQUE</div>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Présentation typique</h4>
+        <ul>
+          <li>Douleur oculaire et frontale intense (nausées, vomissements)</li>
+          <li>BAV brutale</li>
+          <li>Halos colorés autour des lumières</li>
+          <li>Œil rouge, cornée œdémateuse (aspect verre dépoli)</li>
+          <li>Pupille en semi-mydriase aréactive</li>
+          <li>TO très élevé (> 40 mmHg, parfois > 60)</li>
+          <li>Chambre antérieure étroite</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Traitement</h4>
+        <ul>
+          <li>Acétazolamide IV (Diamox) → ↓ TO rapidement</li>
+          <li>Collyres hypotonisants (β-bloquants, α2-agonistes)</li>
+          <li>Mannitol IV si résistance</li>
+          <li>Iridotomie laser (YAG) une fois TO contrôlé → crée communication entre CA et CP</li>
+          <li>IRIDOTOMIE PROPHYLACTIQUE de l'œil adelphe +++</li>
+          <li>⚠ CI aux mydriatiques, médicaments anticholinergiques</li>
+        </ul>
+      </div>
+    </div>
+    <div class="alert alert-orange">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>Terrain :</strong> femme > homme, hypermétrope (chambre ant. peu profonde), asiatique, âgée. Peut être déclenché par : obscurité (mydriase physiologique), médicaments anti-cholinergiques, antidépresseurs tricycliques, antihistaminiques.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Décollement de rétine (DR) rhegmatogène</div>
+    <div class="urgence">🚨 URGENCE CHIRURGICALE</div>
+    <div class="schema">
+PHYSIOPATHOLOGIE
+  Déchirure rétinienne (trou/déchirure à clapet)
+  → Passage de liquide vitréen sous la rétine neurosensorielle
+  → Décollement progressif
+
+SIGNES D'APPEL (phase pré-décollement)
+  ├── Phosphènes (éclairs) → traction vitréorétinienne
+  ├── Myodésopsies nouvelles (DPV)
+  └── Exploration immédiate si myope fort + ces signes
+
+SIGNE DU DÉCOLLEMENT
+  ├── Voile noir (rideau) dans le champ visuel (correspond à la zone décollée)
+  ├── Commence souvent en périphérie (voile inférieur = DR supérieur)
+  └── Si atteint la macula → BAV centrale brutale
+
+TRAITEMENT
+  ├── Tamponnade (gaz ou huile de silicone) + cryopexie
+  ├── Cerclage scléral
+  └── Chirurgie endoculaire (vitrectomie)
+
+⚠ AVANT décollement : photocoagulation laser préventive des déchirures</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Urgence absolue</div>
+      <p><strong>Amaurose fugace</strong> = AIT de la circulation antérieure jusqu'à preuve du contraire. Bilan vasculaire urgent (echo-Doppler carotidien, ECG, bilan embolique). Risque d'AVC constitué dans les 24-48h.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>Le <strong>GAFA</strong> peut être diagnostiqué à tort comme une migraine (douleur frontale + nausées). Chercher toujours : halos colorés, œil rouge, dureté de l'œil à la palpation.</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('aigue')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- CH9 — PRÉLÈVEMENTS CORNÉE -->
+<div id="ch-prelevement" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(79,142,247,0.15)">🏥</div>
+    <div><h2>Prélèvements de cornée à but thérapeutique</h2><div class="subtitle">Banques de cornée · Critères · Délais</div></div>
+  </div>
+  <div class="section">
+    <div class="section-title">Organisation du don</div>
+    <div class="mini-card">
+      <h4>Cadre légal (France)</h4>
+      <ul>
+        <li>Consentement présumé (loi Caillavet) → tout citoyen est donneur par défaut sauf inscription au registre national des refus</li>
+        <li>Coordonnateur hospitalier = interlocuteur clé (signalement des décès)</li>
+        <li>Prélèvement possible jusqu'à <strong>24h après le décès</strong> (en conservation à froid)</li>
+        <li>Banque de tissu (Banque Française des Yeux) → stockage, contrôle qualité, distribution</li>
+      </ul>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">Critères de sélection des donneurs</div>
+    <table>
+      <tr><th>Critères</th><th>Détails</th></tr>
+      <tr><td><strong>Âge</strong></td><td>Pas de limite supérieure d'âge en soi. Minimum : 2-3 ans (cellules endothéliales immatures avant)</td></tr>
+      <tr><td><strong>Densité endothéliale</strong></td><td>> 2000 cellules/mm² (spéculaire). La densité normale est ~2500-3000/mm²</td></tr>
+      <tr><td><strong>CI absolues</strong></td><td>MCJD et prions, leucémie, lymphome, septicémie active, VIH non contrôlé, syphilis active, hépatite C virémique, kératopathie active</td></tr>
+      <tr><td><strong>CI relatives</strong></td><td>Glaucome avancé, chirurgie réfractive (modifie la courbure → adapte l'indication)</td></tr>
+      <tr><td><strong>Conservation</strong></td><td>Milieu nutritif (Optisol-GS) → jusqu'à 14-28 jours. Hypothermique (4°C)</td></tr>
+    </table>
+  </div>
+  <div class="key-fact">⭐ La cornée est <strong>avasculaire</strong> → peu immunogène → risque de rejet moins élevé que pour les organes vascularisés. Pas besoin de compatibilité HLA pour la greffe lamellaire.</div>
+  <button class="done-btn" onclick="markDone('prelevement')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- CH10 — GREFFE DE CORNÉE -->
+<div id="ch-greffe" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(62,207,142,0.15)">🔬</div>
+    <div><h2>Greffe de cornée (Kératoplastie)</h2><div class="subtitle">KPP · Techniques lamellaires · Rejet</div></div>
+  </div>
+  <div class="section">
+    <div class="section-title">Techniques</div>
+    <table>
+      <tr><th>Technique</th><th>Principe</th><th>Indication</th><th>Avantages</th></tr>
+      <tr><td><strong>KPP</strong> (transfixiante)</td><td>Remplacement de toute l'épaisseur cornéenne</td><td>Toutes couches atteintes (kératocône avancé, cicatrice profonde)</td><td>Polyvalente. Sutures au contact 16-20 points</td></tr>
+      <tr><td><strong>DALK</strong> (antérieure profonde)</td><td>Greffe du stroma antérieur. Préserve l'endothélium receveur</td><td>Kératocône, cicatrice stromale sans atteinte endothéliale</td><td>Pas de rejet endothélial. Meilleure durabilité</td></tr>
+      <tr><td><strong>DMEK/DSAEK</strong> (endothéliale)</td><td>Remplacement isolé de l'endothélium (Descemet + endothélium)</td><td>Dystrophie de Fuchs, décompensation endothéliale</td><td>Récupération rapide, peu d'astigmatisme induit</td></tr>
+    </table>
+  </div>
+  <div class="section">
+    <div class="section-title">Rejet de greffe cornéenne</div>
+    <div class="alert alert-red">
+      <span class="alert-icon">🚨</span>
+      <div><strong>Rejet endothélial</strong> = urgence. Ligne de rejet de Khodadoust (ligne de KP alignés traversant le greffon). Traitement : corticoïdes topiques intensifs (toutes les heures). Peut aboutir à l'échec de la greffe si tardif.</div>
+    </div>
+    <div class="mini-card">
+      <h4>Facteurs de risque de rejet</h4>
+      <ul>
+        <li>Vascularisation cornéenne du receveur +++</li>
+        <li>Greffes répétées</li>
+        <li>Uvéite active</li>
+        <li>Mauvaise compliance aux collyres</li>
+        <li>Traumatisme du greffon</li>
+      </ul>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('greffe')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- CH11 — TRAUMATISMES -->
+<div id="ch-traumatismes" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(232,93,93,0.15)">💥</div>
+    <div><h2>Traumatismes oculaires</h2><div class="subtitle">Contusions · Plaies · Corps étrangers</div></div>
+  </div>
+  <div class="section">
+    <div class="section-title">Classification des traumatismes</div>
+    <div class="schema">
+TRAUMATISMES OCULAIRES
+  │
+  ├── FERMÉS (globe intact)
+  │   ├── Contusions du globe
+  │   │   ├── Hyphéma (sang en chambre antérieure) → risque d'HTIC, re-saignement
+  │   │   ├── Iridodialyse, cyclodialyse
+  │   │   ├── Luxation du cristallin
+  │   │   ├── Déchirure/décollement rétinien
+  │   │   └── Hématome sous-rétinien
+  │   └── Fracture du plancher orbitaire ("blow-out")
+  │       → Énophtalmie, diplopie (incarcération droit inférieur), hypoesthésie V2
+  │
+  └── OUVERTS (plaie du globe = urgence chirurgicale)
+      ├── Plaie cornéenne (simple) → suture
+      ├── Plaie sclérale → vitrectomie
+      ├── Plaie cornéo-sclérale avec issue de contenu
+      └── Corps étranger intra-oculaire (CEIO)
+          → Toxicité (sidérose si fer, chalcose si cuivre)
+          → Echographie si cornée opaque
+          → Extraction chirurgicale</div>
+  </div>
+  <div class="section">
+    <div class="section-title">Hyphéma — conduite à tenir</div>
+    <div class="mini-card">
+      <h4>Hyphéma traumatique</h4>
+      <ul>
+        <li>Sang en chambre antérieure (niveau horizontal)</li>
+        <li>Risque de re-saignement à J5-J7 (nécrose du caillot)</li>
+        <li>Risque d'HTIC (glaucome secondaire)</li>
+        <li>Traitement : repos strict, œil semi-ouvert, contrôle TO</li>
+        <li>CI : aspirine, AINS (risque re-saignement)</li>
+        <li>Antifibrinolytiques (acide tranexamique) si risque élevé</li>
+        <li>Surveillance TO quotidienne</li>
+      </ul>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">Conduite à tenir devant un œil ouvert</div>
+    <div class="alert alert-red">
+      <span class="alert-icon">🚨</span>
+      <div>Globe ouvert = chirurgie en urgence (< 24h). NE PAS appuyer sur l'œil, NE PAS instiller de collyres en excès. Cacher l'œil avec une coque protectrice rigide (jamais de compresse appuyée). Jeûne strict. Bilan (scanner orbites). Prophylaxie anti-tétanique. Antibiotiques IV.</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>Devant un <strong>corps étranger intra-oculaire (CEIO)</strong> métallique, l'IRM est <strong>CONTRE-INDIQUÉE</strong> (risque de migration du corps étranger ferreux). Scanner des orbites à la place.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p><strong>Chalcose</strong> (CEIO cuivre) : dépôts verts/jaunes dorés sur le cristallin (anneau de Kayser-Fleischer-like), toxicité rétinienne progressive → extraction urgente même si asymptomatique.</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('traumatismes')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- CH12 — BRÛLURES -->
+<div id="ch-brulures" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(247,209,84,0.15)">🔥</div>
+    <div><h2>Brûlures oculaires</h2><div class="subtitle">Chimiques · Thermiques · UV</div></div>
+  </div>
+  <div class="section">
+    <div class="section-title">Brûlures chimiques — URGENCE ABSOLUE</div>
+    <div class="urgence">🚨 LAVAGE IMMÉDIAT — AVANT TOUT EXAMEN</div>
+    <div class="schema">
+GESTE N°1 = LAVAGE OCULAIRE ABONDANT (au moins 30 minutes)
+  Sérum physiologique, eau du robinet, Dalibour, tout liquide propre disponible
+  Commencer IMMÉDIATEMENT, avant de se rendre aux urgences
+  ↓
+Retirer les lentilles de contact
+  ↓
+Vérification du pH conjonctival (pH-mètre)
+  Objectif : pH entre 7.4 et 7.8 → continuer le lavage si pH anormal
+
+BASE (soude, chaux, ammoniaque) > ACIDE (toxicité)
+  ├── Acide : coagulation superficielle → limite la pénétration (effet barrière)
+  └── BASE : nécrose liquéfiante progressive → pénètre en profondeur +++
+      → Ischémie limbique (limbite) = mauvais pronostic +++    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">Classification de Roper-Hall (gravité)</div>
+    <table>
+      <tr><th>Grade</th><th>Cornée</th><th>Ischémie limbique</th><th>Pronostic</th></tr>
+      <tr><td><strong>I</strong></td><td>Transparente</td><td>0%</td><td>Très bon</td></tr>
+      <tr><td><strong>II</strong></td><td>Transparente avec haze</td><td>< 1/3</td><td>Bon</td></tr>
+      <tr><td><strong>III</strong></td><td>Opaque (iris non visible)</td><td>1/3 à 1/2</td><td>Réservé</td></tr>
+      <tr><td><strong>IV</strong></td><td>Opaque (iris + pupille non visibles)</td><td>> 1/2</td><td>Très sévère</td></tr>
+    </table>
+  </div>
+  <div class="section">
+    <div class="section-title">Traitement des brûlures — phases</div>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Phase aiguë (J1-J7)</h4>
+        <ul>
+          <li>Lavage prolongé (priorité absolue)</li>
+          <li>Débridement de la nécrose conjonctivale</li>
+          <li>Collyres : antibiotiques, corticoïdes (J1-J10), vitamine C, cicatrisants</li>
+          <li>Lentilles thérapeutiques (protège l'épithélium)</li>
+          <li>Traitement HTIC (acétazolamide)</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Phase de réhabilitation (mois)</h4>
+        <ul>
+          <li>Greffe de membrane amniotique (promote cicatrisation)</li>
+          <li>Greffe de cellules souches limbiques (si destruction limbique)</li>
+          <li>Kératoplastie (si opacité cornéenne résiduelle)</li>
+          <li>Chirurgie des séquelles (symblépharons, trichiasis)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">Brûlures UV (kératoconjonctivite actinique)</div>
+    <div class="mini-card">
+      <h4>Photoophtalmie (coup d'arc, UV de montagne/plage)</h4>
+      <ul>
+        <li>Latence 6-12h puis douleurs intenses, photophobie, larmoiement, blépharospasme</li>
+        <li>Kératite ponctuée superficielle (fluorescéine)</li>
+        <li>Traitement : antalgiques, AINS topiques, collyre vitamine A, port de lunettes noires. Guérison en 24-48h</li>
+      </ul>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>Les <strong>brûlures par base</strong> (soude, chaux) sont plus graves que les brûlures par acide car la nécrose est liquéfiante et pénètre en profondeur. Un aspect calme et blanc de la conjonctive après brûlure par base = ischémie massive = très mauvais pronostic (ne pas être rassuré !).</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('brulures')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- CH13 — CATARACTE -->
+<div id="ch-cataracte" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(247,209,84,0.15)">💎</div>
+    <div><h2>Cataracte</h2><div class="subtitle">Opacification du cristallin · Chirurgie · Complications</div></div>
+  </div>
+  <div class="section">
+    <div class="section-title">Définition et classification</div>
+    <div class="mini-card">
+      <h4>Qu'est-ce que la cataracte ?</h4>
+      <p>Opacification partielle ou totale du cristallin entraînant une baisse de vision. Cause de cécité réversible la plus fréquente dans le monde.</p>
+    </div>
+    <table>
+      <tr><th>Type</th><th>Âge</th><th>Cause</th><th>Particularités</th></tr>
+      <tr><td><strong>Sénile</strong> (liée à l'âge)</td><td>> 60 ans</td><td>Vieillissement physiologique des protéines</td><td>La plus fréquente. Nucléaire (jaune-brune), sous-capsulaire postérieure, corticale</td></tr>
+      <tr><td><strong>Secondaire</strong></td><td>Tout âge</td><td>Corticoïdes, diabète, traumatisme, uvéite, radiations</td><td>Sous-capsulaire postérieure typique des corticoïdes, étoile dans le diabète</td></tr>
+      <tr><td><strong>Congénitale</strong></td><td>Naissance</td><td>Génétique, infections (rubéole), métabolique (galactosémie)</td><td>Leucocorie, urgence thérapeutique</td></tr>
+    </table>
+  </div>
+  <div class="section">
+    <div class="section-title">Présentation clinique</div>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Symptômes</h4>
+        <ul>
+          <li>BAV progressive, indolore</li>
+          <li>Éblouissement (gêne en plein soleil, contre-jour)</li>
+          <li>Halos autour des lumières</li>
+          <li>Diplopie monoculaire (cataracte nucléaire)</li>
+          <li>Amélioration transitoire de la vision de près (myopisation du cristallin)</li>
+          <li>Vision des couleurs altérée (jaunissement)</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Examen à la lampe à fente</h4>
+        <ul>
+          <li>Rétro-illumination : opacités visibles dans la pupille dilatée</li>
+          <li>Nucléaire : noyau jaune-brun (dur)</li>
+          <li>Sous-capsulaire postérieure : plaque d'opacité derrière le noyau (pire pour la vision)</li>
+          <li>Corticale : rayons ou vacuoles dans le cortex</li>
+          <li>FO souvent difficile à réaliser → OCT maculaire si doute</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">Chirurgie de la cataracte</div>
+    <div class="schema">
+PHACOÉMULSIFICATION (technique standard)
+  1. Incision cornéenne (< 3 mm)
+  2. Capsulorhexis antérieur circulaire
+  3. Émulsification du cristallin par ultrasons (phacoémulsificateur)
+  4. Aspiration des masses cristalliniennes
+  5. Implant intra-oculaire (IOL) plié → déployé dans le sac capsulaire
+  6. Fermeture (souvent sans suture = incision valvée)
+
+TYPES D'IMPLANTS
+  ├── Monofocal : corrige vision de loin (lunettes de lecture encore nécessaires)
+  ├── Torique : corrige aussi l'astigmatisme
+  ├── Multifocal/EDOF : corrige loin et près (mais halos nocturnes, réduit contraste)
+  └── Calcul de la puissance : formule de Sanders-Retzlaff-Kraff (SRK II) ou IOLMaster
+
+ANESTHÉSIE : topique (collyres anesthésiants) ++ ou locorégionale péri-bulbaire
+DURÉE : 15-20 minutes. Ambulatoire</div>
+  </div>
+  <div class="section">
+    <div class="section-title">Complications de la chirurgie</div>
+    <table>
+      <tr><th>Complication</th><th>Délai</th><th>Signes</th><th>CAT</th></tr>
+      <tr><td>Rupture capsulaire + chute dans le vitré</td><td>Per-opératoire</td><td>Découverte per-op</td><td>Vitrectomie, implant en sulcus</td></tr>
+      <tr><td><strong>Endophtalmie</strong></td><td>J1-J7</td><td>Douleur, BAV, hypopion</td><td>Urgence : antibiotiques intravitréens + vitrectomie</td></tr>
+      <tr><td><strong>Opacification capsule postérieure</strong> (cataracte secondaire)</td><td>Mois à années</td><td>BAV progressive comme avant opération</td><td>Laser YAG (capsulotomie) ambulatoire</td></tr>
+      <tr><td>Décollement rétine</td><td>Variable</td><td>Voile noir, phosphènes</td><td>Chirurgie rétinienne</td></tr>
+      <tr><td>Œdème maculaire cystoïde (Irvine-Gass)</td><td>Semaines</td><td>BAV centrale</td><td>AINS topiques, corticoïdes</td></tr>
+    </table>
+  </div>
+  <div class="key-fact">⭐ La cataracte secondaire aux <strong>corticoïdes</strong> est sous-capsulaire postérieure (SCP) — forme la plus invalidante car axiale. Dose-dépendante. Peut survenir avec les corticoïdes topiques prolongés.</div>
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>La chirurgie de la cataracte n'est pas une urgence chez l'adulte (sauf cataracte traumatique ou phacomorphique fermant l'angle). L'indication est fonctionnelle : quand la gêne est significative pour le patient.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>L'<strong>opacification de la capsule postérieure</strong> (OCP) après chirurgie = "cataracte secondaire" → traitement simple par laser YAG en consultation. Ne pas la confondre avec une vraie récidive de cataracte (le cristallin naturel a été retiré).</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('cataracte')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- CH14 — GLAUCOMES -->
+<div id="ch-glaucome" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(79,142,247,0.15)">📊</div>
+    <div><h2>Glaucomes</h2><div class="subtitle">GPAO · GAFA · Diagnostic · Traitement</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Classification et mécanismes</div>
+    <div class="svg-wrap">
+      <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg" style="max-height:200px">
+        <!-- Schéma angle ouvert vs fermé -->
+        <!-- Angle ouvert -->
+        <text x="80" y="20" fill="#4f8ef7" font-size="12" font-family="monospace" font-weight="bold">Angle OUVERT (GPAO)</text>
+        <!-- Œil simplifié -->
+        <path d="M30 100 Q80 60 130 100 Q80 140 30 100Z" fill="none" stroke="#4f8ef7" stroke-width="2"/>
+        <!-- Cornée -->
+        <path d="M30 85 Q20 100 30 115" fill="none" stroke="#3ecf8e" stroke-width="2.5"/>
+        <!-- Iris -->
+        <line x1="40" y1="80" x2="40" y2="120" stroke="#a47fe0" stroke-width="2"/>
+        <!-- Trabéculum (filtration normale) -->
+        <path d="M30 100 L40 90" stroke="#3ecf8e" stroke-width="2"/>
+        <text x="5" y="70" fill="#3ecf8e" font-size="8" font-family="monospace">Trabéculm</text>
+        <!-- Flux humeur aqueuse -->
+        <path d="M80 100 Q55 95 42 90" stroke="#f7d154" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrow)"/>
+        <text x="55" y="80" fill="#f7d154" font-size="8" font-family="monospace">H.A.</text>
+        <!-- Texte angle ouvert -->
+        <text x="15" y="155" fill="#8b90a8" font-size="9" font-family="monospace">Angle ouvert mais</text>
+        <text x="15" y="167" fill="#8b90a8" font-size="9" font-family="monospace">trabéculum dysfx</text>
+        <text x="15" y="179" fill="#e85d5d" font-size="9" font-family="monospace">TO ↑ insidieux</text>
+
+        <!-- Divider -->
+        <line x1="250" y1="10" x2="250" y2="210" stroke="#2e3350" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+        <!-- Angle fermé -->
+        <text x="320" y="20" fill="#e85d5d" font-size="12" font-family="monospace" font-weight="bold">Angle FERMÉ (GAFA)</text>
+        <path d="M270 100 Q320 60 370 100 Q320 140 270 100Z" fill="none" stroke="#e85d5d" stroke-width="2"/>
+        <!-- Cornée -->
+        <path d="M270 85 Q260 100 270 115" fill="none" stroke="#3ecf8e" stroke-width="2.5"/>
+        <!-- Iris bombé -->
+        <path d="M280 80 Q295 100 280 120" fill="rgba(232,93,93,0.2)" stroke="#e85d5d" stroke-width="2.5"/>
+        <!-- Trabéculum bloqué -->
+        <path d="M270 100 L280 90" stroke="#e85d5d" stroke-width="2"/>
+        <text x="255" y="70" fill="#e85d5d" font-size="8" font-family="monospace">BLOQUÉ</text>
+        <!-- H.A. bloquée -->
+        <path d="M320 100 Q300 95 285 85" stroke="#f7d154" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="295" y="75" fill="#f7d154" font-size="8" font-family="monospace">bloqué</text>
+        <text x="255" y="155" fill="#8b90a8" font-size="9" font-family="monospace">Pupille large → iris</text>
+        <text x="255" y="167" fill="#8b90a8" font-size="9" font-family="monospace">plaque dans l'angle</text>
+        <text x="255" y="179" fill="#e85d5d" font-size="9" font-family="monospace">TO +++ BRUTAL</text>
+
+        <!-- Defs -->
+        <defs>
+          <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0 0 L6 3 L0 6Z" fill="#f7d154"/>
+          </marker>
+        </defs>
+      </svg>
+      <div class="svg-caption">Mécanisme GPAO vs GAFA</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Comparatif GPAO vs GAFA</div>
+    <table>
+      <tr><th></th><th>GPAO (glaucome primitif à angle ouvert)</th><th>GAFA (glaucome aigu par fermeture d'angle)</th></tr>
+      <tr><td><strong>Fréquence</strong></td><td>Le plus fréquent (90% des glaucomes)</td><td>Moins fréquent</td></tr>
+      <tr><td><strong>Symptômes</strong></td><td>AUCUN jusqu'au stade avancé. Perte champ visuel périphérique insidieuse</td><td>Douleur intense, BAV brutale, halos colorés, nausées/vomissements</td></tr>
+      <tr><td><strong>TO</strong></td><td>Souvent élevé mais peut être normal (glaucome à PNT)</td><td>Très élevé > 40 mmHg</td></tr>
+      <tr><td><strong>Pupille</strong></td><td>Normale</td><td>Semi-mydriase ARÉACTIVE</td></tr>
+      <tr><td><strong>Cornée</strong></td><td>Normale</td><td>Œdémateuse (aspect verre dépoli)</td></tr>
+      <tr><td><strong>Angle</strong></td><td>Ouvert (gonioscopie)</td><td>Fermé</td></tr>
+      <tr><td><strong>Terrain</strong></td><td>Âgé, ATCD familiaux, myopie forte, ethnie africaine</td><td>Femme, hypermétrope, asiatique, âgée, chambre ant. étroite</td></tr>
+      <tr><td><strong>Traitement</strong></td><td>Collyres hypotonisants (β-bloquants, prostaglandines, IAC) → laser → chirurgie (trabéculectomie)</td><td>URGENCE : acétazolamide IV + collyres + mannitol → iridotomie laser + iridotomie prophylactique œil adelphe</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GPAO — diagnostic</div>
+    <div class="schema">
+TRIADE DIAGNOSTIQUE DU GPAO
+  1. TONUS OCULAIRE élevé (> 21 mmHg, tonomètre de Goldmann)
+     → Mais glaucome à pression normale possible !
+     → Corriger selon pachymétrie (cornée fine → TO surestimé)
+
+  2. EXCAVATION PAPILLAIRE (rapport C/D)
+     → Normale : C/D ≤ 0,3
+     → Pathologique : C/D > 0,6, asymétrie > 0,2, encoche de la papille
+     → "ISNT rule" : épaisseur RNFL : Inférieur > Supérieur > Nasal > Temporal
+     → En cas de glaucome : encoche supérieure ou inférieure en premier
+
+  3. CHAMP VISUEL (périmétrie statique automatisée, Humphrey)
+     → Scotome de Bjerrum (arciforme), marche nasale, defect en hémi-champ
+     → La perte est irréversible → dépistage et traitement précoce
+
+  OCT du nerf optique : mesure de l'épaisseur RNFL → détecte les pertes précoces</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Traitements médicaux du GPAO</div>
+    <table>
+      <tr><th>Classe</th><th>Mécanisme</th><th>Molécule clé</th><th>Effets secondaires</th></tr>
+      <tr><td><strong>Prostaglandines</strong></td><td>↑ drainage uvéoscléral</td><td>Latanoprost, bimatoprost</td><td>Hypertrichose cils, assombrissement iris, hyperhémie</td></tr>
+      <tr><td><strong>β-bloquants</strong></td><td>↓ production humeur aqueuse</td><td>Timolol</td><td>Bradycardie, bronchospasme, CI asthme, BAV</td></tr>
+      <tr><td><strong>α2-agonistes</strong></td><td>↓ prod + ↑ drainage</td><td>Brimonidine</td><td>Sécheresse buccale, fatigue, CI nouveau-né</td></tr>
+      <tr><td><strong>IAC (inhibiteurs anhydrase carbonique)</strong></td><td>↓ production humeur aqueuse</td><td>Dorzolamide (collyre), acétazolamide (oral)</td><td>Dysgueusie, lithiases rénales (PO)</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p><strong>Timolol</strong> (β-bloquant) en collyre = CI chez l'asthmatique et le patient avec bloc auriculo-ventriculaire. Le passage systémique est significatif malgré l'administration locale.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>Le <strong>glaucome à pression normale</strong> (TO ≤ 21 mmHg) représente 15-20% des glaucomes. Le diagnostic repose sur la triade papille + champ visuel + TO, et non sur le TO seul.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>Les <strong>prostaglandines</strong> sont le traitement de première ligne du GPAO car leur efficacité hypotonisante est la plus forte (↓ 25-35% du TO) et ils ne nécessitent qu'une instillation par soir.</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('glaucome')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- CH15 — DMLA -->
+<div id="ch-dmla" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(247,209,84,0.15)">🟡</div>
+    <div><h2>DMLA — Dégénérescence Maculaire Liée à l'Âge</h2><div class="subtitle">Forme sèche · Forme exsudative · Anti-VEGF</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Deux formes à bien distinguer</div>
+    <table>
+      <tr><th></th><th>DMLA atrophique (sèche)</th><th>DMLA exsudative (humide/néovasculaire)</th></tr>
+      <tr><td><strong>Fréquence</strong></td><td>85% des DMLA</td><td>15% des DMLA mais 90% des cécités</td></tr>
+      <tr><td><strong>Evolution</strong></td><td>Lente, progressive (années)</td><td>Rapide (jours à semaines)</td></tr>
+      <tr><td><strong>Symptômes</strong></td><td>BAV progressive centrale, méta non précoces</td><td>Métamorphopsies brutales +++, scotome central rapide</td></tr>
+      <tr><td><strong>FO</strong></td><td>Drusen (jaunâtres), atrophie géographique</td><td>Drusen + zones grises sous-rétiniennes, exsudats, hémorragies</td></tr>
+      <tr><td><strong>OCT</strong></td><td>Atrophie RPE, disparition des couches externes rétiniennes</td><td>Fluide sous-rétinien, DSR, néovaisseaux choroïdiens</td></tr>
+      <tr><td><strong>Angiographie</strong></td><td>Hypofluorescence atrophie</td><td>Hyperfluorescence précoce néovasseaux</td></tr>
+      <tr><td><strong>Traitement</strong></td><td>Suppléments AREDS2 (vit C, E, Zn, Cu, lutéine, zéaxanthine). Pas de traitement curatif</td><td>Injections intravitréennes (IVT) anti-VEGF +++</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Drusen — lésions précurseurs</div>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Drusen durs (petits, < 63µm)</h4>
+        <ul>
+          <li>Points jaunâtres bien délimités à la macula</li>
+          <li>Risque faible de progression vers DMLA avancée</li>
+          <li>Présents chez beaucoup de sujets âgés "normaux"</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Drusen mous (grands, > 125µm)</h4>
+        <ul>
+          <li>Bords mal délimités, confluents</li>
+          <li>Risque élevé de progression vers atrophie géographique ou néovx</li>
+          <li>Constituent le "stade intermédiaire" DMLA</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Anti-VEGF — traitement de référence de la DMLA exsudative</div>
+    <div class="schema">
+ANTI-VEGF INTRAVITRÉENS
+  Mécanisme : inhibition du VEGF-A → anti-angiogénique + anti-perméabilité
+  
+  Molécules :
+  ├── Ranibizumab (Lucentis) : fragment Fab humanisé, 0.5 mg/0.05mL
+  ├── Aflibercept (Eylea) : protéine de fusion, 2 mg/0.05mL (bloque VEGF-A + VEGF-B + PlGF)
+  ├── Bevacizumab (Avastin) : hors-AMM ophtalmique mais très utilisé
+  └── Faricimab (Vabysmo) : biospécifique VEGF-A + angiopoïétine-2
+
+  Protocoles :
+  ├── Schéma fixe (mensuel) ou PRN (treat-and-extend)
+  └── Surveillance OCT mensuelle au début
+
+  Efficacité : améliore ou stabilise l'AV dans 90% des cas (vs évolution spontanée péjorative)
+  Effets secondaires : rare endophtalmie (0.05%/injection), décollement rétine, hypertonie</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Grille d'Amsler — dépistage à domicile</div>
+    <div class="svg-wrap">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="max-height:180px">
+        <!-- Grille normale -->
+        <rect x="10" y="10" width="80" height="80" fill="#1a1d27" stroke="#2e3350"/>
+        <!-- Lignes normales -->
+        <line x1="10" y1="30" x2="90" y2="30" stroke="#4f8ef7" stroke-width="0.5"/>
+        <line x1="10" y1="50" x2="90" y2="50" stroke="#4f8ef7" stroke-width="0.5"/>
+        <line x1="10" y1="70" x2="90" y2="70" stroke="#4f8ef7" stroke-width="0.5"/>
+        <line x1="30" y1="10" x2="30" y2="90" stroke="#4f8ef7" stroke-width="0.5"/>
+        <line x1="50" y1="10" x2="50" y2="90" stroke="#4f8ef7" stroke-width="0.5"/>
+        <line x1="70" y1="10" x2="70" y2="90" stroke="#4f8ef7" stroke-width="0.5"/>
+        <circle cx="50" cy="50" r="2" fill="#f7d154"/>
+        <text x="15" y="105" fill="#3ecf8e" font-size="9" font-family="monospace">Normal ✓</text>
+        <text x="15" y="117" fill="#8b90a8" font-size="8" font-family="monospace">Lignes droites</text>
+
+        <!-- Grille pathologique -->
+        <rect x="110" y="10" width="80" height="80" fill="#1a1d27" stroke="#2e3350"/>
+        <!-- Lignes déformées (métamorphopsies) -->
+        <path d="M110 30 Q140 25 190 30" stroke="#4f8ef7" stroke-width="0.5" fill="none"/>
+        <path d="M110 50 Q130 40 150 48 Q170 56 190 50" stroke="#e85d5d" stroke-width="1" fill="none"/>
+        <path d="M110 70 Q140 75 190 70" stroke="#4f8ef7" stroke-width="0.5" fill="none"/>
+        <line x1="130" y1="10" x2="130" y2="90" stroke="#4f8ef7" stroke-width="0.5"/>
+        <path d="M150 10 Q145 50 150 90" stroke="#e85d5d" stroke-width="1" fill="none"/>
+        <line x1="170" y1="10" x2="170" y2="90" stroke="#4f8ef7" stroke-width="0.5"/>
+        <!-- Scotome central -->
+        <ellipse cx="150" cy="50" rx="12" ry="10" fill="rgba(232,93,93,0.3)" stroke="#e85d5d" stroke-width="1" stroke-dasharray="2,1"/>
+        <circle cx="150" cy="50" r="2" fill="#f7d154"/>
+        <text x="112" y="105" fill="#e85d5d" font-size="9" font-family="monospace">DMLA ⚠</text>
+        <text x="112" y="117" fill="#8b90a8" font-size="8" font-family="monospace">Déformations/scotome</text>
+      </svg>
+      <div class="svg-caption">Grille d'Amsler — autocontrôle monoculaire à domicile. Toute déformation nouvelle → consultation urgente</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Facteurs de risque de DMLA</div>
+    <div class="tags">
+      <span class="tag tag-red">Âge > 50 ans +++</span>
+      <span class="tag tag-orange">Tabagisme (RR x2-3)</span>
+      <span class="tag tag-blue">ATCD familiaux</span>
+      <span class="tag tag-yellow">Génétique (CFH, ARMS2)</span>
+      <span class="tag tag-purple">Yeux clairs</span>
+      <span class="tag tag-green">HTA, obésité</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>Les <strong>métamorphopsies</strong> (lignes droites paraissant ondulées) sont le symptôme d'alarme de la DMLA exsudative → consultation en urgence (< 48h). La grille d'Amsler doit être testée œil par œil.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>La <strong>DMLA sèche</strong> est plus fréquente (85%) mais la DMLA humide cause <strong>90% des cécités</strong> par DMLA car son évolution est beaucoup plus rapide. Le traitement anti-VEGF a révolutionné le pronostic de la forme humide.</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('dmla')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- CH16 — OCCLUSIONS ARTÉRIELLES + NOIA -->
+<div id="ch-occlusion-arterielle" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(232,93,93,0.15)">🔴</div>
+    <div><h2>Occlusions artérielles rétiniennes & NOIA</h2><div class="subtitle">OACR · OABr · NOIA · Urgences vasculaires oculaires</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Occlusion de l'artère centrale de la rétine (OACR)</div>
+    <div class="urgence">🚨 URGENCE — équivalent AVC</div>
+    <table>
+      <tr><th></th><th>OACR</th><th>OABr (branche)</th></tr>
+      <tr><td><strong>Présentation</strong></td><td>BAV brutale, profonde, indolore, unilatérale. Amaurose complète</td><td>BAV sectorielle, déficit altitudinal ou quadrantique</td></tr>
+      <tr><td><strong>FO</strong></td><td>Rétine blanc laiteux œdémateux + tâche rouge cerise à la macula (fovéa reste rosée car vascularisée par choroïde)</td><td>Blanc segmentaire correspondant au territoire occlus</td></tr>
+      <tr><td><strong>RPM</strong></td><td>DPA homolatéral (déficit afférent)</td><td>Normal ou léger DPA</td></tr>
+      <tr><td><strong>Étiologies</strong></td><td>Embolie +++ (plaque carotidienne, cardiaque), thrombose, vascularite (Horton +++), spasme</td><td>Embolie (plaque de Hollenhorst)</td></tr>
+      <tr><td><strong>Traitement</strong></td><td>Urgence (fenêtre < 4h idéalement) : massage oculaire, paracentèse CA, O2 hyperbare, thrombolyse (controversé). Bilan étiologique vasculaire URGENT (Horton?)</td><td>Bilan vasculaire. Traitement de la cause</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Bilan étiologique systématique</div>
+    <div class="schema">
+OACR → BILAN EN URGENCE (même logique qu'un AIT)
+  ├── Interrogatoire : ATCD cardiovasculaires, fièvre, claudication mâchoire (Horton)
+  ├── VS, CRP → HORTON (artérite temporale) à éliminer en priorité si > 50 ans
+  │   → Si suspicion Horton : corticoïdes IV IMMÉDIATS sans attendre biopsie
+  ├── Echo-Doppler artères carotides
+  ├── ECG, échocardiographie (source embolique)
+  ├── Bilan thrombophilie si jeune
+  └── IRM cérébrale (AVC associé ?)</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Neuropathie optique ischémique antérieure aiguë (NOIA)</div>
+    <table>
+      <tr><th></th><th>NOIA artéritique (Horton)</th><th>NOIA non artéritique</th></tr>
+      <tr><td><strong>Âge</strong></td><td>> 70 ans</td><td> 50-65 ans</td></tr>
+      <tr><td><strong>Symptômes</strong></td><td>BAV brutale, profonde + signes Horton (céphalées temporales, claudication mâchoire, fièvre, AEG)</td><td>BAV brutale, souvent déficit altitudinal inférieur. Réveil</td></tr>
+      <tr><td><strong>FO</strong></td><td>Papille pâle, œdémateuse (parfois hémorragique)</td><td>Œdème papillaire, secteur pâle ou total</td></tr>
+      <tr><td><strong>VS/CRP</strong></td><td>Très élevés (VS > 50, CRP élevée)</td><td>Normaux</td></tr>
+      <tr><td><strong>Terrain</strong></td><td>Artérite de Horton</td><td>HTA, diabète, apnée du sommeil, disque à risque (petit rapport C/D = "disc at risk")</td></tr>
+      <tr><td><strong>Traitement</strong></td><td><strong>URGENCE</strong> : corticoïdes IV (méthylprednisolone 1g/j) IMMÉDIAT pour préserver l'œil controlatéral</td><td>Aucun traitement prouvé efficace. Contrôle FDR CV</td></tr>
+    </table>
+    <div class="alert alert-red">
+      <span class="alert-icon">🚨</span>
+      <div><strong>Maladie de Horton</strong> : devant toute NOIA chez un patient > 50 ans avec signes cliniques ou VS élevée, débuter les corticoïdes AVANT la biopsie de l'artère temporale. La biopsie reste positive plusieurs jours après le début des corticoïdes.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>La <strong>tâche rouge cerise</strong> à la macula lors d'une OACR s'explique par la vascularisation de la fovéa par la choroïde (pas par l'artère centrale) qui maintient la couleur rouge, tandis que la rétine environnante œdémateuse devient blanche.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Urgence absolue</div>
+      <p>NOIA + signes de <strong>maladie de Horton</strong> → corticoïdes IV IMMÉDIATEMENT. Ne pas attendre la biopsie artère temporale ni les résultats de la VS. L'œil controlatéral peut être atteint dans les 24-48h sans traitement.</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('occlusion-arterielle')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- CH17 — OCCLUSIONS VEINEUSES -->
+<div id="ch-occlusion-veineuse" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(79,142,247,0.15)">🔵</div>
+    <div><h2>Occlusions veineuses rétiniennes</h2><div class="subtitle">OVCR · OVBr · Œdème maculaire · Anti-VEGF</div></div>
+  </div>
+  <div class="section">
+    <div class="section-title">Comparatif OVR</div>
+    <table>
+      <tr><th></th><th>OVCR (veine centrale)</th><th>OVBr (branche veineuse)</th></tr>
+      <tr><td><strong>BAV</strong></td><td>Variable : minime si non-ischémique, majeure si ischémique</td><td>Sectorielle, déficit de champ visuel</td></tr>
+      <tr><td><strong>FO</strong></td><td>Hémorragies "en flammèches" dans les 4 quadrants, dilatation veineuse, œdème papillaire, exsudats</td><td>Hémorragies sectorielles (1-3 quadrants), suivant territoire d'une branche veineuse</td></tr>
+      <tr><td><strong>Ischémique vs non-ischémique</strong></td><td>Perfusion capillaire à l'angiographie : si zone ischémique > 10 DA → ISCHÉMIQUE (risque néovaisseaux, glaucome néovasculaire)</td><td>Ischémique si > 5 DA de non-perfusion</td></tr>
+      <tr><td><strong>FDR</strong></td><td>HTA +++, diabète, dyslipidémie, SAOS, glaucome. Signe de croisement artério-veineux (AV)</td><td>Idem. Croisement AV à l'endroit de l'occlusion +++</td></tr>
+      <tr><td><strong>Complications</strong></td><td>Œdème maculaire, néovaisseaux iris (rubéose → glaucome néovasculaire), néovaisseaux rétiniens</td><td>Œdème maculaire sectoriel, néovaisseaux localisés</td></tr>
+      <tr><td><strong>Traitement</strong></td><td>Anti-VEGF IVT (bévatizumab, ranibizumab, aflibercept) ou corticoïdes intravitréens (implant Ozurdex) pour OM. Laser photocoag si néovaisseaux</td><td>Laser grille maculaire + anti-VEGF pour OM. Laser pan-rétinien si néovaisseaux</td></tr>
+    </table>
+  </div>
+  <div class="key-fact">⭐ <strong>Bilan étiologique systématique</strong> : TA, glycémie, bilan lipidique, NFS, VS, hémostase. Rarement thrombophilie (si jeune, bilatéral, récidivant). Traiter les FDR vasculaires.</div>
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>L'<strong>OVCR ischémique</strong> est une urgence car elle peut évoluer vers un glaucome néovasculaire (rubéose irienne → ↑↑ TO résistant). Surveiller l'angle à la gonioscopie. Laser panrétinal prophylactique si néovaisseaux.</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('occlusion-veineuse')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- CH18 — PAUPIÈRES & VOIES LACRYMALES -->
+<div id="ch-paupieres" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(124,92,191,0.15)">👁</div>
+    <div><h2>Pathologies des paupières et voies lacrymales</h2><div class="subtitle">Chalazion · Ptosis · Entropion · Dacryocystite · Sécheresse oculaire</div></div>
+  </div>
+  <div class="section">
+    <div class="section-title">Pathologies des paupières</div>
+    <table>
+      <tr><th>Pathologie</th><th>Définition</th><th>Clinique</th><th>Traitement</th></tr>
+      <tr><td><strong>Orgelet</strong></td><td>Furoncle du follicule pileux d'un cil (Staphylocoque)</td><td>Nodule rouge, douloureux, pustule en pointe de cil</td><td>Antibiotiques locaux, ponction si fluctuation, chaleur</td></tr>
+      <tr><td><strong>Chalazion</strong></td><td>Kyste de rétention d'une glande de Meibomius (non infectieux)</td><td>Nodule palpébral indolore, indolent. Peut récidiver</td><td>Chaleur locale, massage. Si persistant : injection corticoïdes ou excision chirurgicale</td></tr>
+      <tr><td><strong>Entropion</strong></td><td>Bord libre palpébral renversé vers l'intérieur → cils frottent la cornée</td><td>Larmoiement, irritation, kératite ponctuée. Surtout involutionnel (âgé)</td><td>Chirurgie (remise en position du bord libre)</td></tr>
+      <tr><td><strong>Ectropion</strong></td><td>Bord libre palpébral eversé vers l'extérieur</td><td>Larmoiement (point lacrymal déplacé), exposition cornéenne, kératite</td><td>Chirurgie</td></tr>
+      <tr><td><strong>Trichiasis</strong></td><td>Cils mal orientés vers le globe → frottement cornéen</td><td>Irritation chronique, kératite</td><td>Épilation, électrolyse, chirurgie</td></tr>
+      <tr><td><strong>Ptosis</strong></td><td>Chute de la paupière supérieure (marge à moins de 2mm du bord pupillaire)</td><td>Asymétrie, amblyopie si enfant jeune, port de tête</td><td>Chirurgie (renforcement du releveur ou frontalis). Urgence si amblyopie</td></tr>
+      <tr><td><strong>Blépharite</strong></td><td>Inflammation chronique du bord libre</td><td>Rougeur, squames, croûtes autour des cils, sécheresse associée</td><td>Hygiène des cils (compresses chaudes + nettoyage), larmes artificielles</td></tr>
+    </table>
+  </div>
+  <div class="section">
+    <div class="section-title">Voies lacrymales</div>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Anatomie fonctionnelle</h4>
+        <ul>
+          <li>Glande lacrymale → larmes → point lacrymal → canalicule → sac lacrymal → canal lacrymonasal → méat nasal inférieur</li>
+          <li>Film lacrymal : 3 couches (lipidique, aqueuse, muqueuse)</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Dacryocystite</h4>
+        <ul>
+          <li>Infection du sac lacrymal (obstruction du canal lacrymo-nasal)</li>
+          <li>Tuméfaction rouge douloureuse angle interne (entre œil et nez)</li>
+          <li>Larmoiement purulent, reflux au niveau du point lacrymal</li>
+          <li>Germe : Staphylocoque, Streptocoque, Haemophilus</li>
+          <li>Traitement : antibiotiques + dacryocystorhinostomie (chirurgie si récidive)</li>
+          <li>⚠ Nourrisson : dacryocystocèle congénitale (sonde si résistance à 6 mois)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">Sécheresse oculaire (syndrome sec)</div>
+    <div class="mini-card">
+      <h4>Diagnostic</h4>
+      <ul>
+        <li>Brûlures, picotements, sensation de corps étranger, aggravé en fin de journée</li>
+        <li>Test de Schirmer (< 5mm en 5 min = sécheresse)</li>
+        <li>Break up time (BUT) : temps rupture film lacrymal < 10 sec = pathologique</li>
+        <li>Rose bengale / fluorescéine : kératite ponctuée</li>
+        <li>Étiologies : SEP de Sjögren, ménopause, médicaments (antihistaminiques, antidépresseurs, bêtabloquants), lentilles, écrans</li>
+        <li>Traitement : larmes artificielles, occlusion des points lacrymaux, cyclosporine 0.1%</li>
+      </ul>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('paupieres')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- CH19 — ŒIL & SEP -->
+<div id="ch-sep" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(62,207,142,0.15)">🧠</div>
+    <div><h2>Œil et Sclérose en Plaques</h2><div class="subtitle">Névrite optique rétrobulbaire · NORB · OIN</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Névrite optique rétrobulbaire (NORB)</div>
+    <div class="urgence">⚠ Peut être le premier signe de SEP</div>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Présentation typique</h4>
+        <ul>
+          <li>Femme jeune (20-40 ans)</li>
+          <li>BAV unilatérale progressive sur quelques jours</li>
+          <li><strong>Douleur à la mobilisation du globe</strong> (90%) ← signe clé !</li>
+          <li>Dyschromatopsie (vision des couleurs altérée) précoce</li>
+          <li>Scotome central</li>
+          <li>DPA homolatéral (déficit pupillaire afférent)</li>
+          <li><strong>FO NORMAL</strong> (rétrobulbaire = papille non visible cliniquement)</li>
+          <li>→ "Le patient ne voit rien, le médecin non plus" (papille normale)</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Bilan et traitement</h4>
+        <ul>
+          <li><strong>IRM cérébrale et médullaire</strong> → critères McDonald (SEP)</li>
+          <li>PEV (potentiels évoqués visuels) : allongement de la latence P100</li>
+          <li>Ponction lombaire : bandes oligoclonales IgG</li>
+          <li><strong>Traitement :</strong> méthylprednisolone IV 1g/j x3j → accélère la récupération mais ne modifie pas l'AV finale</li>
+          <li>Récupération spontanée en 6-12 semaines</li>
+          <li>Risque SEP à 10 ans : 50% si anomalies IRM, 25% si IRM normale</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Signe d'Uhthoff</div>
+    <div class="alert alert-blue">
+      <span class="alert-icon">ℹ️</span>
+      <div><strong>Signe d'Uhthoff</strong> : aggravation transitoire de la vision après exercice physique ou bain chaud (hyperthermie). Pathognomonique d'une atteinte démyélinisante du nerf optique. Réversible au refroidissement.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Autres manifestations oculaires de la SEP</div>
+    <table>
+      <tr><th>Manifestation</th><th>Mécanisme</th><th>Clinique</th></tr>
+      <tr><td><strong>OIN (ophtalmoplégie internucléaire)</strong></td><td>Lésion FLM (substance blanche péri-ventriculaire)</td><td>Déficit d'adduction + nystagmus abducteur. Convergence préservée. Bilatérale dans la SEP</td></tr>
+      <tr><td><strong>Nystagmus</strong></td><td>Atteinte cérebelleuse ou tronc cérébral</td><td>Oscillopsies, instabilité du regard</td></tr>
+      <tr><td><strong>Paralysies oculomotrices</strong></td><td>Lésions tronc</td><td>Diplopie transitoire</td></tr>
+      <tr><td><strong>Uvéite</strong></td><td>Inflammation associée (rare)</td><td>Corps flottants, BAV</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>Dans la <strong>NORB</strong>, le fond d'œil est NORMAL car la lésion est en arrière de la lame criblée (rétrobulbaire). La papille peut s'atrophier secondairement après la phase aiguë (pâleur temporale).</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>La <strong>corticothérapie IV</strong> accélère la récupération visuelle dans la NORB mais <strong>n'améliore pas l'AV finale</strong> à long terme. Elle est prescrite pour raccourcir la durée de l'épisode.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p><strong>OIN bilatérale</strong> chez un adulte jeune = SEP jusqu'à preuve du contraire. OIN unilatérale chez une personne âgée = AVC du tronc cérébral.</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('sep')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- CH20 — RÉTINOPATHIE DIABÉTIQUE -->
+<div id="ch-retinopathie" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(245,166,35,0.15)">🩺</div>
+    <div><h2>Rétinopathie diabétique</h2><div class="subtitle">Classification · Dépistage · Traitement</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Physiopathologie simplifiée</div>
+    <div class="schema">
+HYPERGLYCÉMIE CHRONIQUE
+  → Épaississement de la membrane basale des capillaires rétiniens
+  → Perte des péricytes (cellules de soutien)
+  → Fragilité capillaire → MICROANÉVRISMES (premier signe FO)
+  → Occlusion capillaire → ischémie rétinienne
+  → Production de VEGF
+  → NÉOVAISSEAUX (fragiles, saignent → hémorragie vitrée, prolifération)
+  → DÉCOLLEMENT DE RÉTINE TRACTIONNEL</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Classification ALFEDIAM — 4 stades</div>
+    <div class="svg-wrap">
+      <svg viewBox="0 0 520 160" xmlns="http://www.w3.org/2000/svg" style="max-height:150px">
+        <!-- Stades -->
+        <rect x="5" y="20" width="110" height="120" rx="8" fill="rgba(62,207,142,0.1)" stroke="#3ecf8e" stroke-width="1.5"/>
+        <text x="60" y="40" fill="#3ecf8e" font-size="9" font-family="monospace" text-anchor="middle" font-weight="bold">Stade 1</text>
+        <text x="60" y="55" fill="#8b90a8" font-size="8" font-family="monospace" text-anchor="middle">RD non</text>
+        <text x="60" y="67" fill="#8b90a8" font-size="8" font-family="monospace" text-anchor="middle">proliférante</text>
+        <text x="60" y="82" fill="#8b90a8" font-size="8" font-family="monospace" text-anchor="middle">minime</text>
+        <text x="60" y="100" fill="#3ecf8e" font-size="8" font-family="monospace" text-anchor="middle">Microanévrismes</text>
+        <text x="60" y="112" fill="#3ecf8e" font-size="8" font-family="monospace" text-anchor="middle">quelques</text>
+
+        <rect x="130" y="20" width="110" height="120" rx="8" fill="rgba(247,209,84,0.1)" stroke="#f7d154" stroke-width="1.5"/>
+        <text x="185" y="40" fill="#f7d154" font-size="9" font-family="monospace" text-anchor="middle" font-weight="bold">Stade 2</text>
+        <text x="185" y="55" fill="#8b90a8" font-size="8" font-family="monospace" text-anchor="middle">RD non</text>
+        <text x="185" y="67" fill="#8b90a8" font-size="8" font-family="monospace" text-anchor="middle">proliférante</text>
+        <text x="185" y="82" fill="#8b90a8" font-size="8" font-family="monospace" text-anchor="middle">modérée</text>
+        <text x="185" y="100" fill="#f7d154" font-size="8" font-family="monospace" text-anchor="middle">Hémorragies</text>
+        <text x="185" y="112" fill="#f7d154" font-size="8" font-family="monospace" text-anchor="middle">exsudats durs</text>
+
+        <rect x="255" y="20" width="110" height="120" rx="8" fill="rgba(245,166,35,0.1)" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="310" y="40" fill="#f5a623" font-size="9" font-family="monospace" text-anchor="middle" font-weight="bold">Stade 3</text>
+        <text x="310" y="55" fill="#8b90a8" font-size="8" font-family="monospace" text-anchor="middle">RD non</text>
+        <text x="310" y="67" fill="#8b90a8" font-size="8" font-family="monospace" text-anchor="middle">proliférante</text>
+        <text x="310" y="82" fill="#8b90a8" font-size="8" font-family="monospace" text-anchor="middle">sévère</text>
+        <text x="310" y="100" fill="#f5a623" font-size="8" font-family="monospace" text-anchor="middle">Règle 4-2-1</text>
+        <text x="310" y="112" fill="#f5a623" font-size="8" font-family="monospace" text-anchor="middle">exsudat cotton</text>
+
+        <rect x="380" y="20" width="130" height="120" rx="8" fill="rgba(232,93,93,0.1)" stroke="#e85d5d" stroke-width="1.5"/>
+        <text x="445" y="40" fill="#e85d5d" font-size="9" font-family="monospace" text-anchor="middle" font-weight="bold">Stade 4</text>
+        <text x="445" y="55" fill="#8b90a8" font-size="8" font-family="monospace" text-anchor="middle">RD</text>
+        <text x="445" y="67" fill="#8b90a8" font-size="8" font-family="monospace" text-anchor="middle">PROLIFÉRANTE</text>
+        <text x="445" y="82" fill="#e85d5d" font-size="8" font-family="monospace" text-anchor="middle">Néovaisseaux</text>
+        <text x="445" y="94" fill="#e85d5d" font-size="8" font-family="monospace" text-anchor="middle">Hémorragie vitrée</text>
+        <text x="445" y="106" fill="#e85d5d" font-size="8" font-family="monospace" text-anchor="middle">DR tractionnel</text>
+        <text x="445" y="118" fill="#e85d5d" font-size="8" font-family="monospace" text-anchor="middle">🚨 Laser urgent</text>
+
+        <!-- Flèches -->
+        <line x1="115" y1="80" x2="130" y2="80" stroke="#8b90a8" stroke-width="1.5" marker-end="url(#arrowG)"/>
+        <line x1="240" y1="80" x2="255" y2="80" stroke="#8b90a8" stroke-width="1.5" marker-end="url(#arrowG)"/>
+        <line x1="365" y1="80" x2="380" y2="80" stroke="#8b90a8" stroke-width="1.5" marker-end="url(#arrowG)"/>
+        <defs>
+          <marker id="arrowG" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0 0 L6 3 L0 6Z" fill="#8b90a8"/>
+          </marker>
+        </defs>
+      </svg>
+      <div class="svg-caption">Classification de la rétinopathie diabétique (ALFEDIAM)</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Règle 4-2-1 (stade 3 sévère)</div>
+    <div class="mini-card">
+      <h4>Au moins 1 des critères suivants définit le stade 3 sévère :</h4>
+      <ul>
+        <li><strong>4 quadrants</strong> : hémorragies intra-rétiniennes abondantes dans les 4 quadrants</li>
+        <li><strong>2 quadrants</strong> : dilatations veineuses en chapelet dans ≥ 2 quadrants</li>
+        <li><strong>1 quadrant</strong> : anomalies micro-vasculaires intra-rétiniennes (AMIR) dans ≥ 1 quadrant</li>
+      </ul>
+      <p style="margin-top:8px; font-size:0.8rem; color:var(--orange)">→ Stade 3 sévère = indication de photocoagulation panrétinale (PPR)</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Œdème maculaire diabétique (OMD)</div>
+    <div class="alert alert-orange">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>L'OMD est la principale cause de BAV dans la rétinopathie diabétique</strong>, indépendamment du stade. Présent à tout stade. Diagnostiqué à l'OCT maculaire (épaississement > 250 µm). Traitement : anti-VEGF IVT +++, ou corticoïdes (Ozurdex) si phakique contre-indiqué.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Dépistage et suivi</div>
+    <div class="schema">
+DIABÈTE TYPE 1
+  ├── Début examen ophtalmologique : 5 ans après le diagnostic (ou à la puberté)
+  └── Rythme : annuel si RD absente ou minime
+
+DIABÈTE TYPE 2
+  ├── Dès le diagnostic (la RD peut être déjà présente)
+  └── Rythme : annuel si RD absente
+
+SITUATIONS À RISQUE ACCRU (suivi plus rapproché)
+  ├── HbA1c élevée ou mal équilibrée
+  ├── HTA associée
+  ├── Néphropathie diabétique
+  ├── Grossesse (aggravation rapide de la RD)
+  └── Début d'insulinothérapie (aggravation paradoxale possible)</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Traitements</div>
+    <table>
+      <tr><th>Indication</th><th>Traitement</th></tr>
+      <tr><td>Prévention (FDR)</td><td>Équilibre glycémique (HbA1c < 7%), contrôle TA, statines</td></tr>
+      <tr><td>Stade 3 sévère et 4</td><td>Photocoagulation panrétinale (PPR) au laser argon → détruire rétine ischémique → ↓ VEGF</td></tr>
+      <tr><td>Œdème maculaire</td><td>Anti-VEGF intravitréens (Eylea, Lucentis) en 1ère ligne. Implant corticoïde (Ozurdex) si résistance</td></tr>
+      <tr><td>Hémorragie vitrée, DR tractionnel</td><td>Vitrectomie chirurgicale</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>La <strong>grossesse</strong> peut aggraver rapidement une rétinopathie diabétique préexistante. Surveillance ophtalmologique impérative au 1er trimestre + suivi rapproché. La forme préproliférante peut évoluer vers la proliférante en quelques mois.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>Amélioration rapide du contrôle glycémique (passage à l'insuline) peut paradoxalement <strong>aggraver transitoirement</strong> la rétinopathie → surveiller de près dans les mois suivant l'équilibration.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>Dans le diabète de type 2, la RD peut être présente <strong>dès le diagnostic</strong> car le diabète évolue souvent à bas bruit pendant des années. Donc examen ophtalmologique dès la découverte du DT2.</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('retinopathie')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+<!-- CH21 — ORBITOPATHIE DYSTHYROÏDIENNE -->
+<div id="ch-dysthyroide" class="hidden">
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:rgba(124,92,191,0.15)">🦋</div>
+    <div><h2>Hyperthyroïdie et Orbitopathie dysthyroïdienne</h2><div class="subtitle">Maladie de Basedow · Exophtalmie · Classification CAS · Urgence cornéenne</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">L'orbitopathie dysthyroïdienne</div>
+    <div class="mini-card">
+      <h4>Physiopathologie</h4>
+      <p>Dans la maladie de Basedow, les anticorps anti-TSH-R activent les fibroblastes orbitaires → accumulation de glycosaminoglycanes dans les muscles oculomoteurs et la graisse orbitaire → <strong>augmentation du volume orbitaire</strong> → exophtalmie.</p>
+      <p style="margin-top:8px">⚠ L'orbitopathie peut précéder, accompagner ou suivre la dysthyroïdie. Elle peut exister sans dysthyroïdie.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Signes cliniques</div>
+    <table>
+      <tr><th>Signe</th><th>Description</th><th>Signification</th></tr>
+      <tr><td><strong>Exophtalmie</strong></td><td>Protrusion du globe > 21 mm (Hertel) ou asymétrie > 2 mm</td><td>Signe cardinal. Bilatérale mais souvent asymétrique</td></tr>
+      <tr><td><strong>Rétraction palpébrale</strong></td><td>Élargissement de la fente palpébrale (sclère blanche visible sous l'iris)</td><td>Signe de Dalrymple (supérieur), de Graefe (retard palpébral en abaissement)</td></tr>
+      <tr><td><strong>Chémosis</strong></td><td>Œdème de la conjonctive</td><td>Inflammation active</td></tr>
+      <tr><td><strong>Diplopie</strong></td><td>Fibrose des muscles oculomoteurs. Droit inférieur +++ (regard vers le haut)</td><td>Atteinte musculaire orbitaire</td></tr>
+      <tr><td><strong>Neuropathie optique compressive</strong></td><td>BAV, dyschromatopsie, DPA</td><td>Urgence ! Compression du NO à l'apex orbitaire</td></tr>
+      <tr><td><strong>Kératopathie d'exposition</strong></td><td>Cornée exposée (lagophtalmie), kératite</td><td>Exophtalmie sévère</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Score CAS (Clinical Activity Score)</div>
+    <div class="schema">
+SCORE CAS (7 items à coter 0 ou 1 point chacun)
+  1. Douleur orbitaire spontanée
+  2. Douleur lors des mouvements oculaires
+  3. Rougeur des paupières
+  4. Rougeur conjonctivale
+  5. Chémosis
+  6. Œdème des paupières
+  7. Gonflement de la caroncule
+
+  INTERPRÉTATION
+  ├── CAS ≥ 3/7 : maladie ACTIVE (inflammation en cours) → traitable par immunosuppresseurs
+  └── CAS < 3/7 : maladie INACTIVE → phase cicatricielle → chirurgie possible
+  
+  → La chirurgie (décompression, muscles, paupières) se fait dans cet ordre et EN PHASE INACTIVE</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Facteurs aggravants</div>
+    <div class="tags">
+      <span class="tag tag-red">Tabagisme +++ (risque x 8)</span>
+      <span class="tag tag-orange">Traitement radioiode (aggrave l'orbitopathie)</span>
+      <span class="tag tag-blue">Dysthyroïdie non contrôlée</span>
+      <span class="tag tag-yellow">Stress oxydatif</span>
+    </div>
+    <div class="alert alert-orange">
+      <span class="alert-icon">⚠️</span>
+      <div>L'<strong>iode radioactif</strong> pour traiter la maladie de Basedow peut aggraver une orbitopathie préexistante → y associer une corticothérapie prophylactique si orbitopathie présente.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Prise en charge</div>
+    <div class="schema">
+MESURES GÉNÉRALES (toujours)
+  ├── Arrêt tabac ABSOLU +++
+  ├── Équilibre thyroïdien
+  ├── Lubrification (larmes artificielles, vitamine A pommade la nuit)
+  └── Lunettes teintées, prismes si diplopie modérée
+
+ORBITOPATHIE ACTIVE MODÉRÉE À SÉVÈRE (CAS ≥ 3)
+  ├── Corticoïdes IV (méthylprednisolone) en cures hebdomadaires (protocole européen)
+  ├── Sélénium (antioxydant, forme légère-modérée active)
+  └── Biothérapies (téprotumumab, rituximab – hors-AMM ou AMM récente)
+
+NEUROPATHIE OPTIQUE COMPRESSIVE → URGENCE CHIRURGICALE
+  └── Décompression orbitaire chirurgicale (parois osseuses reséquées)
+
+PHASE INACTIVE (CAS < 3)
+  ├── 1. Décompression orbitaire (si exophtalmie invalidante)
+  ├── 2. Chirurgie des muscles oculomoteurs (si diplopie persistante)
+  └── 3. Chirurgie palpébrale (après correction de la diplopie)</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚡ Pièges QCM</div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>La <strong>neuropathie optique compressive</strong> peut survenir même sans exophtalmie importante (muscles très épais à l'apex). L'exophtalmie ne permet pas d'évaluer le risque pour le nerf optique.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>La chirurgie de l'orbitopathie se fait <strong>dans un ordre précis</strong> : décompression orbitaire → chirurgie des muscles → chirurgie palpébrale. Inverser cet ordre changerait le résultat des corrections.</p>
+    </div>
+    <div class="qcm-box">
+      <div class="qcm-label">🎯 Piège classique</div>
+      <p>Le <strong>tabac</strong> est le facteur de risque modifiable le plus important dans l'orbitopathie. Il est indispensable d'insister sur le sevrage tabagique avant tout traitement.</p>
+    </div>
+  </div>
+  <button class="done-btn" onclick="markDone('dysthyroide')">✓ Marquer comme relu</button>
+</div>
+</div>
+
+</main>
+</div>
+
+<script>
+// ── ÉTAT ──
+const chapters = ['semiologie','refraction','nourrisson','strabisme','diplopie','infections','chronique','aigue','prelevement','greffe','traumatismes','brulures','cataracte','glaucome','dmla','occlusion-arterielle','occlusion-veineuse','paupieres','sep','retinopathie','dysthyroide'];
+const done = new Set(JSON.parse(localStorage.getItem('ophtalmo-done') || '[]'));
+let current = null;
+
+// ── INIT ──
+updateProgress();
+chapters.forEach(id => {
+  if (done.has(id)) {
+    document.getElementById('nav-' + id)?.classList.add('done');
+  }
+});
+
+// ── NAVIGATION ──
+function showChapter(id) {
+  // Cache tout
+  document.getElementById('welcome').classList.add('hidden');
+  chapters.forEach(cid => {
+    const el = document.getElementById('ch-' + cid);
+    if (el) el.classList.add('hidden');
+  });
+  // Active le bon
+  const el = document.getElementById('ch-' + id);
+  if (el) el.classList.remove('hidden');
+  // Nav
+  chapters.forEach(cid => {
+    document.getElementById('nav-' + cid)?.classList.remove('active');
+  });
+  document.getElementById('nav-' + id)?.classList.add('active');
+  current = id;
+  // Scroll haut
+  document.getElementById('main-content').scrollTop = 0;
+}
+
+// ── MARQUER FAIT ──
+function markDone(id) {
+  const btn = event.currentTarget;
+  if (done.has(id)) {
+    done.delete(id);
+    btn.classList.remove('done-active');
+    btn.textContent = '✓ Marquer comme relu';
+    document.getElementById('nav-' + id)?.classList.remove('done');
+  } else {
+    done.add(id);
+    btn.classList.add('done-active');
+    btn.textContent = '✅ Relu !';
+    document.getElementById('nav-' + id)?.classList.add('done');
+  }
+  localStorage.setItem('ophtalmo-done', JSON.stringify([...done]));
+  updateProgress();
+}
+
+// ── PROGRESS ──
+function updateProgress() {
+  const n = done.size;
+  const total = chapters.length;
+  document.getElementById('progress-text').textContent = n + ' / ' + total + ' chapitres';
+  document.getElementById('progress-fill').style.width = (n / total * 100) + '%';
+}
+
+// ── SEARCH ──
+function handleSearch(query) {
+  if (!query) return;
+  query = query.toLowerCase();
+  // Simple: cherche dans le texte des boutons nav
+  let found = null;
+  document.querySelectorAll('nav button').forEach(btn => {
+    if (btn.textContent.toLowerCase().includes(query)) {
+      found = btn;
+    }
+  });
+  if (found) found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ── DONE BUTTONS STATE ──
+chapters.forEach(id => {
+  if (done.has(id)) {
+    const ch = document.getElementById('ch-' + id);
+    if (ch) {
+      const btn = ch.querySelector('.done-btn');
+      if (btn) {
+        btn.classList.add('done-active');
+        btn.textContent = '✅ Relu !';
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
